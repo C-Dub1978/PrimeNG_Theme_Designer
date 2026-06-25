@@ -1,0 +1,11 @@
+{
+    "servers": {
+      "primeng": {
+        "command": "node",
+        "args": [
+          "-e",
+          "require('@primeng/mcp/server')"
+        ]
+      }
+    }
+  }

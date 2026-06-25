@@ -1,0 +1,17 @@
+$text: #eeeadb
+$background: #040407
+$primary: #08f00b
+$secondary: #5236cc
+$accent: #fb108e
+
+Gradients:
+--linearPrimarySecondary: linear-gradient(#08f00b, #5236cc);
+--linearPrimaryAccent: linear-gradient(#08f00b, #fb108e);
+--linearSecondaryAccent: linear-gradient(#5236cc, #fb108e);
+--radialPrimarySecondary: radial-gradient(#08f00b, #5236cc);
+--radialPrimaryAccent: radial-gradient(#08f00b, #fb108e);
+--radialSecondaryAccent: radial-gradient(#5236cc, #fb108e);
+
+https://www.realtimecolors.com/?colors=eeeadb-040407-08f00b-5236cc-fb108e&fonts=Inter-Inter
+
+

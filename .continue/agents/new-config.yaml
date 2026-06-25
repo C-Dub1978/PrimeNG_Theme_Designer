@@ -1,0 +1,46 @@
+name: "Theme Designer Workspace"
+version: "1.0.0"
+schema: "v1"
+
+models:
+  - name: "Qwen3.5 9b"
+    provider: "llama.cpp"
+    model: "Qwen3.5-9B-Q4_K_M.gguf"
+    apiBase: "http://192.168.1"
+    contextLength: 8192
+    maxTokens: 4096
+    completionOptions:
+      temperature: 0.2
+    roles:
+      - chat
+      - edit
+      - apply
+      - autocomplete
+
+  - name: "Qwen3 14b (Remote chat/code)"
+    provider: "llama.cpp"
+    model: "Qwen3-14B-Q4_K_M.gguf"
+    apiBase: "http://192.168.1"
+    contextLength: 16384
+    maxTokens: 2048
+    roles:
+      - chat
+      - edit
+      - apply
+      - autocomplete
+    requestOptions:
+      extraBody:
+        reasoning_budget: 0
+
+mcpServers:
+  workspace-filesystem:
+    command: "npx"
+    args:
+      - "-y"
+      - "@modelcontextprotocol/server-filesystem"
+      - "%workspace%/theme-designer" # <--- Keeps the agent locked safely inside theme-designer
+  primeng:
+    command: "node"
+    args:
+      - "-e"
+      - "require('@primeng/mcp/server')"
