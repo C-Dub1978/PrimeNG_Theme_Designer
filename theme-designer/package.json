@@ -18,6 +18,7 @@
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
     "@primeng/mcp": "^21.1.9",
+    "@primeuix/mcp": "^1.0.1",
     "@primeuix/themes": "^2.0.3",
     "primeicons": "^7.0.0",
     "primeng": "^21.1.9",
