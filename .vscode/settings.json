@@ -1,5 +1,7 @@
 {
     "debug.javascript.defaultRuntimeExecutable": {
-        "pwa-node": "/home/cdub_dell/snap/code/247/.local/share/mise/shims/node"
-    }
+        "pwa-node": "/home/cdub_dell/.local/share/mise/shims/node"
+    },
+    "java.jdt.ls.java.home": "/home/cdub_dell/.local/share/mise/installs/java/openjdk-25.0.2",
+    "java.import.gradle.java.home": "/home/cdub_dell/.local/share/mise/installs/java/openjdk-25.0.2"
 }
