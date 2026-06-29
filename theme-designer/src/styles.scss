@@ -1,1 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --app-text: #01152d;
+  --app-background: #fdedf7;
+  --app-primary: #f70858;
+  --app-secondary: #8ef075;
+  --app-accent: #5eeff7;
+  --linearPrimarySecondary: linear-gradient(135deg, #f70858, #8ef075);
+  --linearPrimaryAccent: linear-gradient(135deg, #f70858, #5eeff7);
+  --linearSecondaryAccent: linear-gradient(135deg, #8ef075, #5eeff7);
+  --radialPrimarySecondary: radial-gradient(circle, #f70858, #8ef075);
+  --radialPrimaryAccent: radial-gradient(circle, #f70858, #5eeff7);
+  --radialSecondaryAccent: radial-gradient(circle, #8ef075, #5eeff7);
+}
+:root.p-dark, :root.theme-dark {
+  --app-text: #eeeadb;
+  --app-background: #040407;
+  --app-primary: #08f00b;
+  --app-secondary: #5236cc;
+  --app-accent: #fb108e;
+  --linearPrimarySecondary: linear-gradient(135deg, #08f00b, #5236cc);
+  --linearPrimaryAccent: linear-gradient(135deg, #08f00b, #fb108e);
+  --linearSecondaryAccent: linear-gradient(135deg, #5236cc, #fb108e);
+  --radialPrimarySecondary: radial-gradient(circle, #08f00b, #5236cc);
+  --radialPrimaryAccent: radial-gradient(circle, #08f00b, #fb108e);
+  --radialSecondaryAccent: radial-gradient(circle, #5236cc, #fb108e);
+}
+body {
+  background-color: var(--app-background);
+  color: var(--app-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
