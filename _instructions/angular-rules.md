@@ -4,7 +4,7 @@ You are an expert in TypeScript, Angular v22, and scalable web development. Foll
 
 ## 💻 Tech Stack Context
 - **Core Framework:** Angular v22 (standalone architecture by default). NEVER downgrade `@angular/core` or `@angular/cli`.
-- **UI Engine:** PrimeNG v21 (Styled Mode).
+- **UI Engine:** PrimeNG v22 (Styled Mode).
 
 ## 📂 Architecture & Component Rules
 - **Component File Structure:** For a component named `ProjectDashboard`, omit the `.component` suffix in the filename. Generate exactly three files:

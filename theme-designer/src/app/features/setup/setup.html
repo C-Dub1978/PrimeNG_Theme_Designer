@@ -1,0 +1,342 @@
+<p-stepper [value]="activeStep()" orientation="vertical" class="setup-stepper">
+  <!-- Step List: Navigation Headers -->
+  <p-step-list>
+    <p-step [value]="1" label="Import Theme" />
+    <p-step [value]="2" label="Preset Base" />
+    <p-step [value]="3" label="Confirm & Start" />
+  </p-step-list>
+
+  <!-- Step Panels: Content Areas -->
+  <p-step-panels>
+
+    <!-- Step 1: File Upload Container -->
+    <p-step-panel [value]="1">
+      <ng-template #content let-activateCallback="activateCallback">
+        <div class="step-content">
+          <div class="step-header">
+            <h2 class="step-title">Import Existing Theme</h2>
+            <p class="step-description">Upload a previously saved theme configuration file (.json) to auto-populate your settings.</p>
+          </div>
+
+          <div class="upload-container" [class.disabled]="step2HasPresetSelected()">
+            <p-fileUpload
+              #fileUploader
+              mode="basic"
+              chooseLabel="📁 Choose JSON File"
+              chooseIcon="pi pi-upload"
+              url="./api/upload"
+              accept="application/json"
+              [multiple]="false"  
+              [disabled]="step2HasPresetSelected"
+              (onSelect)="onFileSelected($event)"
+              (onRemove)="onFileRemoved()"
+              class="theme-file-input"
+            >                                                                                                                                                                                                                                                                                                                              
+              <ng-template pTemplate="content">
+                @if (!!uploadedFile()) {
+                  <div class="uploaded-file-info">
+                    <i class="pi pi-file uploaded-file-icon"></i>
+                    <span class="uploaded-file-name">{{ uploadedFile()?.name }}</span>
+                    <span class="uploaded-file-size">({{ uploadedFile()?.size / 1024 | number:'1.0-0' }} KB)</span>
+                  </div>
+                } @else {
+                  <p class="no-file-selected">No file chosen. Click "Choose" to select a .json theme file.</p>
+                }
+              </ng-template>
+            </p-fileUpload>
+
+            @if (uploadedFile()) {
+              <div class="file-actions">
+                <button
+                  type="button"
+                  pButton
+                  severity="secondary"
+                  (click)="removeFile()"
+                  icon="pi pi-times"
+                  class="p-button-outlined p-button-sm"
+                >
+                  Remove
+                </button>
+              </div>
+            }
+          </div>
+
+          <div class="step-divider">
+            <span class="divider-line"></span>
+            <span class="divider-text">OR</span>
+            <span class="divider-line"></span>
+          </div>
+
+          <div class="step-footer">
+            <button
+              type="button"
+              pButton
+              label="Next: Preset Base"
+              icon="pi pi-arrow-right"
+              iconPos="right"
+              (click)="activateCallback(2)"
+              [disabled]="!uploadedFile"
+              class="btn-next"
+            >
+              Next: Preset Base
+            </button>
+            <button
+              type="button"
+              pButton
+              label="Skip to Preset Base"
+              severity="secondary"
+              icon="pi pi-forward"
+              (click)="skipToPreset = true; activateCallback(2)"
+              class="p-button-outlined p-button-secondary btn-skip"
+            >
+              Skip to Preset Base
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </p-step-panel>
+
+    <!-- Step 2: Preset Base Configuration Form (Signal Forms) -->
+    <p-step-panel [value]="2">
+      <ng-template #content let-activateCallback="activateCallback">
+        <div class="step-content">
+          <div class="step-header">
+            <h2 class="step-title">Preset Base Configuration</h2>
+            <p class="step-description">Define your new theme parameters or configure the imported theme.</p>
+          </div>
+
+          <!-- Modern Angular Signal Forms: formGroup + formControl directive bindings -->
+          <form [formGroup]="setupForm" class="config-form">
+
+            <!-- Theme Name (Signal Form: formControl) -->
+            <div class="form-field">
+              <label for="theme-name" class="form-label">
+                Theme Name
+                <span class="required-indicator">*</span>
+              </label>
+              <p-inputText
+                id="theme-name"
+                type="text"
+                formControlName="themeName"
+                placeholder="Enter your theme name (e.g., My Custom Dark Theme)"
+                class="theme-name-input"
+              />
+              @if (setupForm.get('themeName')?.disabled) {
+                <small class="field-hint">
+                  <i class="pi pi-info-circle"></i>
+                  Locked because a theme file was imported in Step 1.
+                </small>
+              }
+            </div>
+
+            <!-- Preset Base Dropdown (Signal Form: formControl) -->
+            <div class="form-field">
+              <label for="preset-base" class="form-label">
+                Preset Base
+                <span class="required-indicator">*</span>
+              </label>
+              <p-dropdown
+                id="preset-base"
+                [options]="presetOptions"
+                optionLabel="label"
+                optionValue="value"
+                formControlName="presetBase"
+                placeholder="Select a preset base..."
+                [disabled]="isPresetLocked"
+                class="preset-dropdown"
+              >
+                <ng-template #option let-option>
+                  <div class="preset-option">
+                    <span class="preset-name">{{ option.label }}</span>
+                    @if (option.category) {
+                      <span class="preset-category">{{ option.category }}</span>
+                    }
+                  </div>
+                </ng-template>
+                <ng-template #value let-value>
+                  @if (value) {
+                    <span class="selected-preset-value">{{ value }}</span>
+                  } @else {
+                    <span class="pi pi-minus"></span>
+                  }
+                </ng-template>
+              </p-dropdown>
+              @if (setupForm.get('presetBase')?.disabled) {
+                <small class="field-hint">
+                  <i class="pi pi-info-circle"></i>
+                  Locked and prepopulated because a valid file was imported in Step 1.
+                </small>
+              }
+            </div>
+
+            <!-- Add Dark Theme Toggle (Signal Form: formControl) -->
+            <div class="form-field form-field-toggle">
+              <div class="toggle-label-container">
+                <label for="dark-mode-toggle" class="form-label">
+                  Add Dark Theme?
+                </label>
+                <p class="toggle-description">Generate a complementary dark theme variant alongside your light theme.</p>
+              </div>
+              <p-toggleButton
+                id="dark-mode-toggle"
+                formControlName="enableDarkTheme"
+                offLabel="OFF"
+                onLabel="ON"
+                [styleWidth]="false"
+                class="dark-mode-toggle"
+              />
+            </div>
+
+          </form>
+          <!-- End Signal Forms formGroup -->
+
+          <div class="step-footer">
+            <button
+              type="button"
+              pButton
+              label="Back: Import Theme"
+              severity="secondary"
+              icon="pi pi-arrow-left"
+              iconPos="left"
+              (click)="activateCallback(1)"
+              class="btn-back"
+            >
+              Back: Import Theme
+            </button>
+            <button
+              type="button"
+              pButton
+              label="Next: Confirm Settings"
+              icon="pi pi-arrow-right"
+              iconPos="right"
+              (click)="activateCallback(3)"
+              class="btn-next"
+            >
+              Next: Confirm Settings
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </p-step-panel>
+
+    <!-- Step 3: Confirmation & Action -->
+    <p-step-panel [value]="3">
+      <ng-template #content let-activateCallback="activateCallback">
+        <div class="step-content">
+          <div class="step-header">
+            <h2 class="step-title">Confirm Your Settings</h2>
+            <p class="step-description">Review your theme configuration before starting the design phase.</p>
+          </div>
+
+          <!-- Read-Only Confirmation Summary Card -->
+          <div class="confirmation-summary">
+            <div class="summary-header">
+              <i class="pi pi-check-circle summary-icon"></i>
+              <h3 class="summary-title">Theme Configuration Summary</h3>
+            </div>
+
+            <div class="summary-grid">
+              <!-- Theme Name -->
+              <div class="summary-item">
+                <span class="summary-label">Theme Name</span>
+                <span class="summary-value">
+                  {{ setupForm.get('themeName')?.value || 'Not specified' }}
+                </span>
+              </div>
+
+              <!-- Preset Base -->
+              <div class="summary-item">
+                <span class="summary-label">Preset Base</span>
+                <span class="summary-value">
+                  @if (setupForm.get('presetBase')?.value) {
+                    <span class="preset-badge">{{ setupForm.get('presetBase')?.value }}</span>
+                  } @else {
+                    <span class="no-value">Not selected</span>
+                  }
+                </span>
+              </div>
+
+              <!-- Dark Theme -->
+              <div class="summary-item">
+                <span class="summary-label">Dark Theme</span>
+                <span class="summary-value">
+                  @if (setupForm.get('enableDarkTheme')?.value) {
+                    <span class="badge badge-active">Enabled</span>
+                  } @else {
+                    <span class="badge badge-inactive">Disabled</span>
+                  }
+                </span>
+              </div>
+
+              <!-- Imported File -->
+              <div class="summary-item">
+                <span class="summary-label">Source File</span>
+                <span class="summary-value">
+                  @if (uploadedFile) {
+                    <span class="file-badge">
+                      <i class="pi pi-file"></i>
+                      {{ uploadedFile.name }}
+                    </span>
+                  } @else {
+                    <span class="no-value">Fresh configuration</span>
+                  }
+                </span>
+              </div>
+            </div>
+
+            <!-- Configuration Preview -->
+            @if (uploadedFile) {
+              <div class="configuration-preview">
+                <h4 class="preview-title">
+                  <i class="pi pi-info-circle"></i>
+                  Configuration Source
+                </h4>
+                <p class="preview-text">
+                  Your settings will be based on the imported theme file: <strong>{{ uploadedFile.name }}</strong>.
+                  You may adjust the preset base and dark theme options above.
+                </p>
+              </div>
+            } @else {
+              <div class="configuration-preview">
+                <h4 class="preview-title">
+                  <i class="pi pi-exclamation-triangle"></i>
+                  Fresh Configuration
+                </h4>
+                <p class="preview-text">
+                  You are starting with a fresh theme configuration. All default values will be applied based on your selected preset base.
+                </p>
+              </div>
+            }
+          </div>
+
+          <div class="step-footer confirm-footer">
+            <button
+              type="button"
+              pButton
+              label="Back: Edit Settings"
+              severity="secondary"
+              icon="pi pi-arrow-left"
+              iconPos="left"
+              (click)="activateCallback(2)"
+              class="btn-back"
+            >
+              Back: Edit Settings
+            </button>
+            <button
+              type="button"
+              pButton
+              label="🎨 START DESIGNING!"
+              icon="pi pi-palette"
+              iconPos="right"
+              (click)="onStartDesigning()"
+              class="btn-start-designing"
+            >
+              🎨 START DESIGNING!
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </p-step-panel>
+
+  </p-step-panels>
+</p-stepper>
