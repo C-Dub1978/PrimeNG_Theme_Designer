@@ -4,6 +4,11 @@ on:
   push:
     branches: [ trunk ] # Triggers deployment when you push to the main branch
 
+# Add this block right here:
+defaults:
+  run:
+    working-directory: ./theme-designer
+
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
@@ -29,13 +34,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22' # Using Node 22 to match your Angular version
+          cache: 'npm'
+          cache-dependency-path: '/theme-designer/package-lock.json'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm ci --prefix theme-designer
 
       - name: Generate Env and Build Angular Application
         env:
-          PRIME_NG_KEY: ${{ secrets.PRIME_NG_KEY }} 
+          NG_APP_PRIME_NG_KEY: ${{ secrets.NG_APP_PRIME_NG_KEY }} 
         run: npm run build-prod
 
       - name: Upload Artifact

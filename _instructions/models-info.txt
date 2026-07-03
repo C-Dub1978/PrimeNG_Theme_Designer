@@ -1,0 +1,14 @@
+Model Name: qwen2.5-coder-14b-instruct-q8_0.gguf
+Alias: 'qwen2.5-14b-8'
+Command:
+  llama-server.exe
+  -m C:\llama-cpp\models\qwen2.5-coder-14b-instruct-q8_0.gguf `
+  --alias "qwen2.5-14b-8" `
+  -ngl 999 `
+  -fa on `
+  -c 8192 `
+  -cb `
+  -t 6 `
+  --parallel 1 `
+  --cache-type-k q8_0 `
+  --cache-type-v q8_0
