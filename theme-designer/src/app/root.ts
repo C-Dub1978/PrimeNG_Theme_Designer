@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { ToolbarModule } from 'primeng/toolbar';
 
 @Component({
   selector: 'td-root',
-  imports: [ButtonModule, RouterOutlet],
+  imports: [ButtonModule, RouterOutlet, ToolbarModule ],
   templateUrl: './root.html',
   styleUrl: './root.scss'
 })

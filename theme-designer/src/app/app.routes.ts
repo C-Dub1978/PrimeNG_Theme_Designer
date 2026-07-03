@@ -4,17 +4,17 @@ export const routes: Routes = [
   {
     path: 'setup',
     loadComponent: () =>
-      import('./features/setup/setup').then((m) => m.SetupComponent),
+      import('./features/setup/setup').then((m) => m.Setup),
   },
   {
     path: '/studio',
     loadComponent: () =>
-      import('./features/studio/studio').then((m) => m.StudioComponent),
+      import('./features/studio/studio').then((m) => m.Studio),
   },
   {
     path: '/studio:designID',
     loadComponent: () =>
-      import('./features/studio/studio').then((m) => m.StudioComponent),
+      import('./features/studio/studio').then((m) => m.Studio),
   },
   {
     path: '',

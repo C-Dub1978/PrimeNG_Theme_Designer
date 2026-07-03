@@ -4,7 +4,6 @@
   "cli": {
     "packageManager": "npm"
   },
-
   "newProjectRoot": "projects",
   "projects": {
     "theme-designer": {
@@ -22,7 +21,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@ngx-env/builder:application",
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
@@ -67,7 +66,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular/build:dev-server",
+          "builder": "@ngx-env/builder:dev-server",
           "configurations": {
             "production": {
               "buildTarget": "theme-designer:build:production"
@@ -76,12 +75,14 @@
               "buildTarget": "theme-designer:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {}
         },
         "test": {
-          "builder": "@angular/build:unit-test",
+          "builder": "@ngx-env/builder:karma",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"]
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "builderMode": "browser"
           }
         }
       }

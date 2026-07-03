@@ -1,26 +1,50 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { disabled, form, FormField } from '@angular/forms/signals';
 import { StudioStateService } from '../../core/services/studio-state.service';
-import { StudioStateSchema } from '../../core/schemas/studio-state.schema';
+import { StudioStateSchema } from '../../core/models/theme-designer.model';
 import { MessageService } from 'primeng/api';
-import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
+import { FileUploadHandlerEvent, FileUploadModule, FileUpload, FileSelectEvent } from 'primeng/fileupload';
 import { Stepper, StepperModule } from 'primeng/stepper';
 import { DecimalPipe } from '@angular/common';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { ButtonModule } from 'primeng/button';
+import { HttpClient } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+
+/**
+ * Data shape backing the Setup step's Signal Form.
+ */
+interface SetupFormData {
+  themeName: string;
+  presetBase: 'Aura' | 'Lara' | 'Nora' | 'Material' | '';
+  enableDarkTheme: boolean;
+}
 
 @Component({
   selector: 'td-setup',
   templateUrl: './setup.html',
   styleUrl: './setup.scss',
   providers: [
-    MessageService
+    MessageService,
+    HttpClient
   ],
   imports: [
-    Stepper,
     FileUploadModule,
+    SelectModule,
+    ToggleButtonModule,
     StepperModule,
-    DecimalPipe
+    InputTextModule,
+    ButtonModule,
+    Stepper,
+    DecimalPipe,
+    FormField,
+    ReactiveFormsModule
+  ]
 })
-export class SetupComponent {
+export class Setup {
   private router = inject(Router);
   private toastService = inject(MessageService);
   private studioStateService = inject(StudioStateService);
@@ -30,51 +54,37 @@ export class SetupComponent {
 
   // ─── File Upload State ───────────────────────────────────────────────
   uploadedFile = signal<File | null>(null);
-  step1HasFileUploaded = signal(false);
-
-  // ─── Preset / Mutual Exclusion State ─────────────────────────────────
-  step2HasPresetSelected = signal(false);
-  isPresetLocked = signal(false);
+  isFileUploaded = signal(false);
 
   // ─── Preset Dropdown Options ─────────────────────────────────────────
   presetOptions = [
-    { label: 'Aura', category: 'PrimeOne Design' },
-    { label: 'Lara', category: 'PrimeOne Design' },
-    { label: 'Nora', category: 'PrimeOne Design' },
-    { label: 'Material', category: 'Material Design' }
+    { label: 'Aura', category: 'PrimeOne Design', value: 'Aura' },
+    { label: 'Lara', category: 'PrimeOne Design', value: 'Lara' },
+    { label: 'Nora', category: 'PrimeOne Design', value: 'Nora' },
+    { label: 'Material', category: 'Material Design', value: 'Material' }
   ];
 
-  // ─── Signal Form (Angular 22 Signal Forms exclusively) ───────────────
-  setupForm = formGroup({
-    themeName: formControl(''),
-    presetBase: formControl(''),
-    enableDarkTheme: formControl(false)
+  // ─── Setup Form Data Model (Angular 22 Signal Forms) ──────────────────
+  setupModel = signal<SetupFormData>({
+    themeName: '',
+    presetBase: '',
+    enableDarkTheme: false
   });
 
-  // ─── Constructor: Effect to sync step2HasPresetSelected with form ────
-  constructor() {
-    // Track presetBase form control changes to unlock file upload
-    effect(() => {
-      const selectedPreset = this.setupForm.get('presetBase')?.value;
-      const wasLocked = this.isPresetLocked();
-      const hasPreset = !!selectedPreset;
+  // Generate the interactive field tree, wiring mutual-exclusion logic between
+  // the imported-file flow and the manual preset selection flow.
+  setupForm = form(this.setupModel, (path) => {
+    disabled(path.presetBase, { when: () => this.isFileUploaded() });
+  });
 
-      // If user manually selected a preset (form was touched and has value)
-      if (hasPreset && !wasLocked) {
-        this.step2HasPresetSelected.set(true);
-        this.isPresetLocked.set(true);
-      }
-
-      // If preset was cleared, unlock both UI elements
-      if (!hasPreset) {
-        this.step2HasPresetSelected.set(false);
-        this.isPresetLocked.set(false);
-      }
-    });
-  }
+  // ─── Mutual Exclusion: Manual Preset Selection ────────────────────────
+  // True only when the user has directly interacted with the preset dropdown
+  // (its field becomes dirty on UI interaction, never on a programmatic
+  // setupModel.set() patch from an imported file).
+  isPresetManuallySelected = computed(() => this.setupForm.presetBase().dirty());
 
   // ─── File Selected Handler ───────────────────────────────────────────
-  onFileSelected(event: FileUploadHandlerEvent): void {
+  onFileSelected(event: FileSelectEvent): void {
     const files = event.files;
 
     if (!files || files.length === 0) {
@@ -97,22 +107,17 @@ export class SetupComponent {
         if (validationResult.success) {
           const validData = validationResult.data;
 
-          // Extract original configuration and patch form signals
+          // Extract original configuration and patch into the setup model
           const setupConfig = validData.setupConfig;
 
-          // Patch the theme name from imported config
-          this.setupForm.get('themeName')?.set(setupConfig.name);
-
-          // Patch the preset base from imported config
-          this.setupForm.get('presetBase')?.set(setupConfig.preset);
-
-          // Patch the dark theme flag from imported config
-          this.setupForm.get('enableDarkTheme')?.set(setupConfig.hasDarkTheme);
+          this.setupModel.set({
+            themeName: setupConfig.name,
+            presetBase: setupConfig.preset,
+            enableDarkTheme: setupConfig.hasDarkTheme
+          });
 
           // Lock the preset dropdown (file took precedence)
-          this.isPresetLocked.set(true);
-          this.step2HasPresetSelected.set(true);
-          this.step1HasFileUploaded.set(true);
+          this.isFileUploaded.set(true);
 
           // Store the uploaded file reference
           this.uploadedFile.set(file);
@@ -126,10 +131,10 @@ export class SetupComponent {
         } else {
           // Zod validation failed — clear file input and alert user
           this.uploadedFile.set(null);
-          this.step1HasFileUploaded.set(false);
+          this.isFileUploaded.set(false);
 
-          const errorMessage = validationResult.error.errors
-            .map((err) => `${err.path.join('.')}: ${err.message}`)
+          const errorMessage = validationResult.error.issues
+            .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
             .join('; ');
 
           this.toastService.add({
@@ -139,10 +144,10 @@ export class SetupComponent {
             life: 5000
           });
         }
-      } catch (parseError) {
+      } catch {
         // JSON.parse failed — clear file input and alert user
         this.uploadedFile.set(null);
-        this.step1HasFileUploaded.set(false);
+        this.isFileUploaded.set(false);
 
         this.toastService.add({
           severity: 'error',
@@ -155,7 +160,7 @@ export class SetupComponent {
 
     reader.onerror = (): void => {
       this.uploadedFile.set(null);
-      this.step1HasFileUploaded.set(false);
+      this.isFileUploaded.set(false);
 
       this.toastService.add({
         severity: 'error',
@@ -176,45 +181,31 @@ export class SetupComponent {
   // ─── Remove File Handler ─────────────────────────────────────────────
   removeFile(): void {
     this.uploadedFile.set(null);
-    this.step1HasFileUploaded.set(false);
+    this.isFileUploaded.set(false);
 
-    // Unlock preset dropdown when file is removed
-    this.isPresetLocked.set(false);
-    this.step2HasPresetSelected.set(false);
-
-    // Clear form values that were populated from file import
-    this.setupForm.get('themeName')?.reset();
-    this.setupForm.get('presetBase')?.reset();
-    this.setupForm.get('enableDarkTheme')?.reset(false);
+    // Clear form values that were populated from the file import
+    this.setupModel.set({
+      themeName: '',
+      presetBase: '',
+      enableDarkTheme: false
+    });
   }
 
   // ─── Submission Handler: START DESIGNING! ────────────────────────────
   onStartDesigning(): void {
-    // Generate a unique identity
+    // Generate a unique identity for the new studio session
     const uniqueId = crypto.randomUUID();
 
-    // Get form values
-    const themeName = this.setupForm.get('themeName')?.value ?? '';
-    const presetBase = this.setupForm.get('presetBase')?.value ?? '';
-    const enableDarkTheme = this.setupForm.get('enableDarkTheme')?.value ?? false;
+    const { themeName, presetBase, enableDarkTheme } = this.setupModel();
 
-    // Build the StudioStateService payload
-    const statePayload = {
-      setupConfig: {
-        id: uniqueId,
-        name: themeName,
-        preset: presetBase as 'Aura' | 'Lara' | 'Nora' | 'Material',
-        hasDarkTheme: enableDarkTheme
-      },
-      customTokenRows: [],
-      primitivePlaceholders: {},
-      semanticOverrideMap: {}
-    };
+    // Invoke the injected StudioStateService to map and persist the layout
+    this.studioStateService.initializeNewTheme({
+      name: themeName,
+      preset: presetBase as 'Aura' | 'Lara' | 'Nora' | 'Material',
+      hasDarkTheme: enableDarkTheme
+    });
 
-    // Initialize the state service with the payload
-    this.studioStateService.initializeState(statePayload);
-
-    // Navigate to the studio with the unique ID
+    // Navigate to the studio with the generated unique ID
     this.router.navigate(['/studio', uniqueId]);
   }
 }
