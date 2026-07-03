@@ -33,7 +33,11 @@
               }
             ],
             "styles": ["src/styles.scss"],
-            "polyfills": ["zone.js"]
+            "polyfills": ["zone.js"],
+            "outputPath": {
+                "base": "dist/theme-designer",
+                "browser": ""
+            }
           },
           "configurations": {
             "production": {
