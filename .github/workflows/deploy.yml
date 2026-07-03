@@ -15,7 +15,7 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment to prevent conflicts
+# Allow only one concurrent deployment to prevent conflicts test
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -29,6 +29,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
