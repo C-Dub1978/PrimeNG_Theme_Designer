@@ -38,7 +38,7 @@ jobs:
           node-version: '22' # Using Node 22 to match your Angular version
 
       - name: Install Dependencies
-        run: npm ci --prefix theme-designer
+        run: cd ./theme-designer && npm ci
 
       - name: Generate Env and Build Angular Application
         env:
