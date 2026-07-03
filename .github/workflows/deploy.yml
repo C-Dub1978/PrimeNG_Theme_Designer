@@ -35,7 +35,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22' # Using Node 22 to match your Angular version
+          node-version: '26' # Using Node 22 to match your Angular version
 
       - name: Install Dependencies
         working-directory: ./theme-designer
