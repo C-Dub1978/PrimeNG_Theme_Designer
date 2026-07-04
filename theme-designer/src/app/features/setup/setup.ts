@@ -4,22 +4,23 @@ import { disabled, form, FormField } from '@angular/forms/signals';
 import { StudioStateService } from '../../core/services/studio-state.service';
 import { StudioStateSchema } from '../../core/models/theme-designer.model';
 import { MessageService } from 'primeng/api';
-import { FileUploadHandlerEvent, FileUploadModule, FileUpload, FileSelectEvent } from 'primeng/fileupload';
+import { FileUploadModule, FileSelectEvent } from 'primeng/fileupload';
 import { Stepper, StepperModule } from 'primeng/stepper';
 import { DecimalPipe } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ButtonModule } from 'primeng/button';
-import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CheckboxModule } from 'primeng/checkbox';
+import { LabelModule } from 'primeng/label';
 
 /**
  * Data shape backing the Setup step's Signal Form.
  */
 interface SetupFormData {
   themeName: string;
-  presetBase: 'Aura' | 'Lara' | 'Nora' | 'Material' | '';
+  presetBase: ('Aura' | 'Lara' | 'Nora' | 'Material') | null;
   enableDarkTheme: boolean;
 }
 
@@ -28,8 +29,7 @@ interface SetupFormData {
   templateUrl: './setup.html',
   styleUrl: './setup.scss',
   providers: [
-    MessageService,
-    HttpClient
+    MessageService
   ],
   imports: [
     FileUploadModule,
@@ -41,7 +41,9 @@ interface SetupFormData {
     Stepper,
     DecimalPipe,
     FormField,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CheckboxModule,
+    LabelModule
   ]
 })
 export class Setup {
@@ -67,7 +69,7 @@ export class Setup {
   // ─── Setup Form Data Model (Angular 22 Signal Forms) ──────────────────
   setupModel = signal<SetupFormData>({
     themeName: '',
-    presetBase: '',
+    presetBase: null,
     enableDarkTheme: false
   });
 
@@ -173,6 +175,11 @@ export class Setup {
     reader.readAsText(file);
   }
 
+  isStep2Invalid(): boolean {
+    const values = this.setupModel();
+    return !values.themeName.trim() || !values.presetBase;
+  }
+
   // ─── File Removed Handler ────────────────────────────────────────────
   onFileRemoved(): void {
     this.removeFile();
@@ -186,7 +193,7 @@ export class Setup {
     // Clear form values that were populated from the file import
     this.setupModel.set({
       themeName: '',
-      presetBase: '',
+      presetBase: null,
       enableDarkTheme: false
     });
   }

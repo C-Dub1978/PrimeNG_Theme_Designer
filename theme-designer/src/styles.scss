@@ -25,7 +25,7 @@
   --radialSecondaryAccent: radial-gradient(circle, #5236cc, #fb108e);
 }
 body {
-  background-color: var(--app-background);
+  background-color: var(--app-background); 
   color: var(--app-text);
   transition: background-color 0.3s ease, color 0.3s ease;
   margin: 0;

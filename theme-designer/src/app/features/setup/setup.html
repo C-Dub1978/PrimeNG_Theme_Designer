@@ -1,4 +1,4 @@
-<p-stepper [value]="activeStep().value" orientation="vertical" class="setup-stepper">
+<p-stepper [value]="activeStep().value" orientation="horizontal" class="setup-stepper">
   <!-- Step List: Navigation Headers -->
   <p-step-list>
     <p-step [value]="1" label="Import Theme" />
@@ -7,12 +7,12 @@
   </p-step-list>
 
   <!-- Step Panels: Content Areas -->
-  <p-step-panels>
+  <p-step-panels class="setup-wrapper">
     <!-- Step 1: File Upload Container -->
-    <p-step-panel [value]="1">
+    <p-step-panel [value]="1" class="setup-step-box">
       <ng-template #content let-activateCallback="activateCallback">
-        <div class="step-content">
-          <div class="step-header">
+        <div class="step-content centered">
+          <div class="step-header centered">
             <h2 class="step-title">Import Existing Theme</h2>
             <p class="step-description">
               Upload a previously saved theme configuration file (.json) to auto-populate your
@@ -86,6 +86,7 @@
             >
               Next: Preset Base
             </button>
+            <span class="spacer">&nbsp;</span>
             <button
               type="button"
               pButton
@@ -103,10 +104,10 @@
     </p-step-panel>
 
     <!-- Step 2: Preset Base Configuration Form (Angular 22 Signal Forms) -->
-    <p-step-panel [value]="2">
+    <p-step-panel [value]="2" class="setup-step-box">
       <ng-template #content let-activateCallback="activateCallback">
-        <div class="step-content">
-          <div class="step-header">
+        <div class="step-content centered">
+          <div class="step-header centered">
             <h2 class="step-title">Preset Base Configuration</h2>
             <p class="step-description">
               Define your new theme parameters or configure the imported theme.
@@ -173,19 +174,15 @@
             <!-- Add Dark Theme Toggle (Signal Form field) -->
             <div class="form-field form-field-toggle">
               <div class="toggle-label-container">
-                <label for="dark-mode-toggle" class="form-label"> Add Dark Theme? </label>
-                <p class="toggle-description">
-                  Generate a complementary dark theme variant alongside your light theme.
-                </p>
-              </div>
-              <p-togglebutton
-                id="dark-mode-toggle"
-                [formField]="setupForm.enableDarkTheme"
-                offLabel="OFF"
-                onLabel="ON"
-                [style]="{ 'width': '100%' }"
+                <label for="dark-mode-toggle" class="form-label">Add Dark Theme?</label>
+                <p-checkbox
                 class="dark-mode-toggle"
-              />
+                inputId="dark-mode-toggle"
+                size="large"
+                [formField]="setupForm.enableDarkTheme"
+                [binary]="true"
+              ></p-checkbox>
+              </div>
             </div>
           </form>
           <!-- End Signal Forms field bindings -->
@@ -209,6 +206,7 @@
               label="Next: Confirm Settings"
               icon="pi pi-arrow-right"
               iconPos="right"
+              [disabled]="isStep2Invalid()"
               (click)="activateCallback(3)"
               class="btn-next"
             >
@@ -220,10 +218,10 @@
     </p-step-panel>
 
     <!-- Step 3: Confirmation & Action -->
-    <p-step-panel [value]="3">
+    <p-step-panel [value]="3" class="setup-step-box">
       <ng-template #content let-activateCallback="activateCallback">
-        <div class="step-content">
-          <div class="step-header">
+        <div class="step-content centered">
+          <div class="step-header centered">
             <h2 class="step-title">Confirm Your Settings</h2>
             <p class="step-description">
               Review your theme configuration before starting the design phase.
@@ -332,8 +330,9 @@
               label="🎨 START DESIGNING!"
               icon="pi pi-palette"
               iconPos="right"
-              (click)="onStartDesigning()"
               class="btn-start-designing"
+              [disabled]="isStep2Invalid()"
+              (click)="onStartDesigning()"
             >
               🎨 START DESIGNING!
             </button>
