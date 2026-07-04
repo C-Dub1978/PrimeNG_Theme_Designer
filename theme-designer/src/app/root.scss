@@ -1,0 +1,11 @@
+.switch-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+.switch-label {
+    /* Adjust these properties to fit your design */
+    font-size: 0.75rem;
+    color: white;
+    z-index: 10;
+}

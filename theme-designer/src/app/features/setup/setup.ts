@@ -12,8 +12,9 @@ import { SelectModule } from 'primeng/select';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { ButtonModule } from 'primeng/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CheckboxModule } from 'primeng/checkbox';
+import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 import { LabelModule } from 'primeng/label';
+import { ToolbarService } from '../../core/services/toolbar.service';
 
 /**
  * Data shape backing the Setup step's Signal Form.
@@ -50,6 +51,7 @@ export class Setup {
   private router = inject(Router);
   private toastService = inject(MessageService);
   private studioStateService = inject(StudioStateService);
+  private toolbarService = inject(ToolbarService);
 
   // ─── Stepper State ───────────────────────────────────────────────────
   activeStep = signal({ value: 1 });
@@ -84,6 +86,11 @@ export class Setup {
   // (its field becomes dirty on UI interaction, never on a programmatic
   // setupModel.set() patch from an imported file).
   isPresetManuallySelected = computed(() => this.setupForm.presetBase().dirty());
+
+  handleDarkModeChange(event: CheckboxChangeEvent): void {
+    const value = event.checked;
+    this.toolbarService.setSchemaHasDarkMode(!!value);
+  }
 
   // ─── File Selected Handler ───────────────────────────────────────────
   onFileSelected(event: FileSelectEvent): void {
@@ -175,7 +182,7 @@ export class Setup {
     reader.readAsText(file);
   }
 
-  isStep2Invalid(): boolean {
+  isFormInvalid(): boolean {
     const values = this.setupModel();
     return !values.themeName.trim() || !values.presetBase;
   }

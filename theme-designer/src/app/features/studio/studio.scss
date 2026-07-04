@@ -1,0 +1,17 @@
+.studio-header {
+  /* Linear gradient background using PrimeNG CSS variables for dynamic theming */
+  background: linear-gradient(135deg, var(--p-primary-700) 0%, var(--p-primary-900) 100%);
+  
+  /* Clean structural flex layout for beautifully spaced text elements */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  gap: 1.5rem;
+  
+  /* Modern flexbox properties for responsive spacing */
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+}
+.studio-content { }
+.studio-footer { }

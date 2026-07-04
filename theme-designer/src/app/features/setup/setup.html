@@ -28,11 +28,10 @@
               chooseIcon="pi pi-upload"
               url="./api/upload"
               accept="application/json"
+              class="theme-file-input"
               [multiple]="false"
-              [disabled]="isPresetManuallySelected()"
               (onSelect)="onFileSelected($event)"
               (onRemove)="onFileRemoved()"
-              class="theme-file-input"
             >
               <ng-template pTemplate="content">
                 @if (!!uploadedFile()) {
@@ -127,7 +126,7 @@
                 id="theme-name"
                 type="text"
                 [formField]="setupForm.themeName"
-                placeholder="Enter your theme name (e.g., My Custom Dark Theme)"
+                placeholder="Enter your theme name (e.g., Tokyo Sunset)"
                 class="theme-name-input"
               />
             </div>
@@ -176,12 +175,13 @@
               <div class="toggle-label-container">
                 <label for="dark-mode-toggle" class="form-label">Add Dark Theme?</label>
                 <p-checkbox
-                class="dark-mode-toggle"
-                inputId="dark-mode-toggle"
-                size="large"
-                [formField]="setupForm.enableDarkTheme"
-                [binary]="true"
-              ></p-checkbox>
+                  class="dark-mode-toggle"
+                  inputId="dark-mode-toggle"
+                  size="large"
+                  (onChange)="handleDarkModeChange($event)"
+                  [formField]="setupForm.enableDarkTheme"
+                  [binary]="true"
+                ></p-checkbox>
               </div>
             </div>
           </form>
@@ -200,13 +200,14 @@
             >
               Back: Import Theme
             </button>
+            <span class="spacer">&nbsp;</span>
             <button
               type="button"
               pButton
               label="Next: Confirm Settings"
               icon="pi pi-arrow-right"
               iconPos="right"
-              [disabled]="isStep2Invalid()"
+              [disabled]="isFormInvalid()"
               (click)="activateCallback(3)"
               class="btn-next"
             >
@@ -324,6 +325,7 @@
             >
               Back: Edit Settings
             </button>
+            <span class="spacer">&nbsp;</span>
             <button
               type="button"
               pButton
@@ -331,7 +333,7 @@
               icon="pi pi-palette"
               iconPos="right"
               class="btn-start-designing"
-              [disabled]="isStep2Invalid()"
+              [disabled]="isFormInvalid()"
               (click)="onStartDesigning()"
             >
               🎨 START DESIGNING!

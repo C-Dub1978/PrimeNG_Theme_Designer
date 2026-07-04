@@ -4,13 +4,13 @@
   </ng-template>
   <!-- The top toolbar - this button should be a light/dark theme toggle, ONLY if they choose to add a dark theme in step 2-->
   <ng-template #end>
-    <button
-      pButton
-      type="button"
-      class="p-button-text"
-      icon="pi pi-cog"
-      label="Settings"
-    ></button>
+    @if (!!schemaHasDarkMode()) {
+      <div class="switch-wrapper">
+        <span class="switch-label">{{ !!darkModeActive ? '🌚' : '🌞' }}</span>
+        <p-toggleswitch [disabled]="!schemaHasDarkMode()" (click)="toggleDarkMode()">
+        </p-toggleswitch>
+      </div>
+    }
   </ng-template>
 </p-toolbar>
 
