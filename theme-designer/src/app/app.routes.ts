@@ -7,12 +7,12 @@ export const routes: Routes = [
       import('./features/setup/setup').then((m) => m.Setup),
   },
   {
-    path: '/studio',
+    path: 'studio',
     loadComponent: () =>
       import('./features/studio/studio').then((m) => m.Studio),
   },
   {
-    path: '/studio:designID',
+    path: 'studio:designID',
     loadComponent: () =>
       import('./features/studio/studio').then((m) => m.Studio),
   },
