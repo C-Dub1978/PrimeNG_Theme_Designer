@@ -1,9 +1,22 @@
 <section class="studio-layout">
-      <header class="studio-header">
-        <h2 class="p-text-4xl p-text-bold p-mt-3 p-mb-2 p-uppercase">
-          @text("PrimeNG Custom Theme Designer")
-        </h2>
-      </header>
+  <header class="studio-header">
+    <h2 class="p-text-4xl p-text-bold p-mt-3 p-mb-2 p-uppercase">
+      @text("PrimeNG Custom Theme Designer")
+    </h2>
+    <p-togglebutton
+      [(ngModel)]="isDarkMode"
+      [disabled]="isDarkThemeDisabled()"
+      [offIcon]="'pi pi-sun'"
+      [onIcon]="'pi pi-moon'"
+    >
+      <ng-template pTemplate="true">
+        <i class="pi pi-moon"></i>
+      </ng-template>
+      <ng-template pTemplate="false">
+        <i class="pi pi-sun"></i>
+      </ng-template>
+    </p-togglebutton>
+  </header>
   <main class="studio-content">
     <router-outlet></router-outlet>
   </main>

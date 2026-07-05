@@ -9,6 +9,7 @@ export interface ThemeSetupConfig {
   name: string;
   preset: 'Aura' | 'Lara' | 'Nora' | 'Material';
   hasDarkTheme: boolean;
+  isDarkMode: boolean;
 }
 
 /**
@@ -42,6 +43,7 @@ export const ThemeSetupConfigSchema = z.object({
   name: z.string().min(1, 'Theme name is required'),
   preset: z.enum(['Aura', 'Lara', 'Nora', 'Material']),
   hasDarkTheme: z.boolean(),
+  isDarkMode: z.boolean(),
 });
 
 /**

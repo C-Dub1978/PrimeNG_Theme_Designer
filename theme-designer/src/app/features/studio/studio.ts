@@ -1,6 +1,8 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { StudioStateService } from '../../core/services/studio-state.service';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { FormsModule } from '@angular/forms';
 
 /**
  * Studio - Main theme design studio controller.
@@ -12,7 +14,7 @@ import { StudioStateService } from '../../core/services/studio-state.service';
   selector: 'td-studio',
   templateUrl: './studio.html',
   styleUrl: './studio.scss',
-  imports: [RouterOutlet]
+  imports: [RouterOutlet, ToggleButtonModule, FormsModule]
 })
 export class Studio {
   private router = inject(Router);
@@ -29,4 +31,18 @@ export class Studio {
    * Returns null if no session is active or state is uninitialized.
    */
   activeState = computed(() => this.studioStateService.activeState());
+
+  /**
+   * Current dark mode state (true = dark theme active).
+   * Bound to the PrimeNG toggleButton component.
+   */
+  isDarkMode = computed(() => this.studioStateService.activeState()?.setupConfig?.isDarkMode ?? false);
+
+  /**
+   * Whether the dark theme is disabled (true = toggle is disabled).
+   * Bound to the PrimeNG toggleButton disabled attribute.
+   */
+  isDarkThemeDisabled = signal<boolean>(
+    !this.studioStateService.activeState()?.setupConfig?.isDarkMode
+  );
 }

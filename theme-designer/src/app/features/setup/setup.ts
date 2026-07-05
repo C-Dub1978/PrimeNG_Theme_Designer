@@ -214,10 +214,11 @@ export class Setup {
 
     // Invoke the injected StudioStateService to map and persist the layout
     this.studioStateService.initializeNewTheme({
-      name: themeName,
-      preset: presetBase as 'Aura' | 'Lara' | 'Nora' | 'Material',
-      hasDarkTheme: enableDarkTheme
-    });
+        name: themeName,
+        preset: presetBase!,
+        hasDarkTheme: enableDarkTheme,  // Satisfies the hasDarkTheme contract
+        isDarkMode: enableDarkTheme    // Satisfies the isDarkMode contract
+      });
 
     // Navigate to the studio with the generated unique ID
     this.router.navigate(['/studio', uniqueId]);
