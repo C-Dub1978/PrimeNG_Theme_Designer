@@ -16,6 +16,18 @@
 - **Test Execution:** Run tests using `npx vitest run` in the terminal to verify changes. Do not leave Vitest running in watch mode indefinitely.
 - **Verification Boundary:** Never mark a coding task as complete until the Vitest suite passes with zero errors or regressions.
 - **Mocking:** Utilize native Vitest functions (`vi.fn()`, `vi.spyOn()`, `vi.mock()`) for separating dependencies and mocking external modules.
+- The ONLY allowed testing framework is Vitest. 
+- Direct usage of Jasmine or Jest globals is strictly FORBIDDEN (e.g., NO `jasmine.createSpyObj`, NO `spyOn`, NO `toBeTrue`).
+- You must explicitly import your testing blocks (`describe`, `it`, `expect`, `beforeEach`, `vi`) from `'vitest'`.
+- To create mock services, use native TypeScript objects or Vitest's `vi.fn()` utilities.
+- Example Mock Setup:
+  ```typescript
+  import { describe, it, expect, beforeEach, vi } from 'vitest';
+  
+  const mockStudioStateService = {
+    activeState: vi.fn(() => signal(null))
+  };
+  ```
 
 ## 🔒 4. Error Handling & Robustness
 - **Async Safety:** Wrap all asynchronous operations, file interactions, and API calls in robust `try/catch` blocks.

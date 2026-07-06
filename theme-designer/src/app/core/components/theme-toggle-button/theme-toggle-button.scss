@@ -1,0 +1,15 @@
+.theme-toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .theme-toggle-label {
+    font-weight: 500;
+    color: var(--text-color);
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}

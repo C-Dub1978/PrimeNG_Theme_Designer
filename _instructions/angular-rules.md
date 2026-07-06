@@ -15,6 +15,17 @@ You are an expert in TypeScript, Angular v22, and scalable web development. Foll
 - **Dependency Injection:** Use the functional `inject()` function exclusively. Never use constructor injection.
 - **Folder Placement:** Keep components small, focused on single responsibility, and contained within their own folders under a feature-based hierarchy (e.g., `src/app/features/`).
 
+### ⚠️ CRITICAL REACTIVE ROUTING POLICY: NO RXJS SUBSCRIPTIONS
+- Direct RxJS `.subscribe()` blocks for routing parameters, query parameters, or form data are strictly FORBIDDEN.
+- You must use modern Angular Signals for all routing values.
+- To listen to route parameters, use `inject(ActivatedRoute).paramMap` or `queryParamMap` wrapped inside `toSignal()` from `@angular/core/rxjs-interop`.
+- Example: 
+  ```typescript
+  private route = inject(ActivatedRoute);
+  params = toSignal(this.route.paramMap);
+  id = computed(() => this.params()?.get('designID') || '');
+  ```
+
 ## 🧱 Component Decorator Constraints
 - **System Defaults:** Do NOT explicitly write `standalone: true` or `changeDetection: ChangeDetectionStrategy.OnPush` inside component decorators. These are system defaults in Angular v22+.
 - **Host Properties:** Do NOT use legacy `@HostBinding` or `@HostListener` decorators. Put host bindings explicitly inside the `host: {}` configuration map of the `@Component` or `@Directive` decorator.

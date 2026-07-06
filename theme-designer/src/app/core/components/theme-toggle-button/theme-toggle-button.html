@@ -1,0 +1,11 @@
+<div (click)="toggleTheme()" [class.disabled]="!isDarkSupported()" class="theme-toggle-container">
+    @let isDarkModeActive = toolbarService.darkModeActivated();
+    <span class="theme-toggle-label">
+        {{ !!isDarkModeActive ? moonEmoji : sunEmoji }}{{ !!isDarkModeActive ? 'Dark Mode' : 'Light Mode'}}
+    </span>
+    <p-togglebutton
+        [onIcon]="!!isDarkModeActive ? 'pi pi-moon' : 'pi pi-sum'"
+        [offIcon]="!!isDarkModeActive ? 'pi pi-sun' : 'pi pi-moon'"
+        [disabled]="!isDarkSupported()"
+    ></p-togglebutton>
+</div>
