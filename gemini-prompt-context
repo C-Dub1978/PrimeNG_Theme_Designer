@@ -1,0 +1,56 @@
+SYSTEM CONTEXT RESTORATION OVERRIDE
+We are resuming an active software development pipeline. Below is our exact infrastructure layout, hardware metrics, coding guardrails, and current roadmap checkpoint. Absorb this state completely and wait for my next instruction.
+
+1. LOCAL SYSTEM & HARDWARE ACCELERATION INFRASTRUCTURE
+- Development Machine: Linux environment hosting VSCode with Continue.dev extension.
+- Continue Config: Modern '~/.continue/config.yaml' setup running 'provider: llama.cpp' and pointing straight to a remote Windows IP address.
+- Remote Server Rig: Windows 11 machine connected via local network and managed via SSH.
+- Dual-GPU Hardware Pool: 1x MSI 5070 Ti (16GB VRAM) + 1x PNY RTX 2000 Pro (16GB VRAM). Both monitors are routed through onboard motherboard video, leaving all 32GB of VRAM completely unburdened and at a 0MB baseline.
+- Active Model Server Baseline: Running 'qwen2.5-coder-32b-instruct-q5_k_m.gguf' on llama-server via an optimized layer-split command:
+  "llama-server.exe -m "./qwen2.5-coder-32b-instruct-q5_k_m.gguf" --alias qwen2.5-32 -ngl all -sm layer -c 32768 -fa on -np 1 -t 8 --jinja --port 8080 --host 0.0.0.0"
+
+2. TARGET PATHS & PATH ALIASES MATRIX (theme-designer/tsconfig.app.json)
+The entire Angular application lives inside the `/theme-designer` subdirectory. The following TypeScript paths are configured and active:
+- "@core/*": ["src/app/core/*"]
+- "@features/*": ["src/app/features/*"]
+- "@pages/*": ["src/app/pages/*"]
+- "@models": ["src/app/core/models/theme-designer.model.ts"]
+- "@services/*": ["src/app/core/services/*"]
+
+3. MANDATORY PROJECT RULES & CODING LAW (config.yaml systemPrompt)
+- CRITICAL NAMING LAW: Do NOT append or include the suffix word "Component" in any filenames, classes, or selectors. Keep names cleanly descriptive (e.g., class 'ThemeToggleButton', file 'theme-toggle-button.ts').
+- REACTIVE ROUTING POLICY: Direct RxJS '.subscribe()' blocks for routing parameters, query parameters, or state tracking are strictly FORBIDDEN. Use modern Angular Signals via 'toSignal()' or track through 'computed()' states.
+- TESTING FRAMEWORK LAW: The ONLY allowed testing framework is Vitest. Usage of Jasmine or Jest globals is strictly FORBIDDEN (no jasmine.createSpyObj, no spyOn). Explicitly import 'describe, it, expect, beforeEach, vi' from 'vitest' and mock via native TS objects and 'vi.fn()'.
+- STYLING POLICY: Write pure, modern SCSS rules using native CSS selectors. Absolutely NO Tailwind CSS or utility classes.
+- FRAMEWORK BASELINE: Angular 22, ChangeDetectionStrategy.OnPush, stable Signal Forms, and native control flow structures (@if, @for).
+
+4. WORKSPACE CHECKPOINT STATUS
+- Completed: 'ThemeToggleButton' controller, HTML template, and SCSS styles are complete and fully active.
+- Completed: 'StudioHeader' banner layout is built with custom linear-gradient background.
+- Completed: 'StudioFooter' is built, displaying text metrics and minimalist social links (LinkedIn, GitHub, Portfolio site).
+- In-Flight Target: We have just used the Angular CLI via Continue to scaffold the empty 'StudioShell' workspace layout framework files inside: 'theme-designer/src/app/pages/studio-shell/'.
+- Current Active Controller Logic (studio-shell.ts):
+  ```typescript
+  import { Component, ChangeDetectionStrategy, computed, inject } from '@angular/core';
+  import { ActivatedRoute, RouterOutlet } from '@angular/router';
+  import { toSignal } from '@angular/core/rxjs-interop';
+  import { StudioHeader } from '@core/components/studio-header/studio-header';
+  import { StudioFooter } from '@core/components/studio-footer/studio-footer';
+
+  @Component({
+    selector: 'td-studio-shell',
+    standalone: true,
+    imports: [StudioHeader, StudioFooter, RouterOutlet],
+    templateUrl: './studio-shell.html',
+    styleUrl: './studio-shell.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
+  })
+  export class StudioShell {
+    private route = inject(ActivatedRoute);
+    paramMapSignal = toSignal(this.route.paramMap);
+    designId = computed(() => this.paramMapSignal()?.get('designID') || '');
+  }
+  ```
+
+Acknowledgment Task:
+Acknowledge that you have fully absorbed this infrastructure layout and coding law matrix. Do not write markdown documentation or draft fresh components yet. Simply reply with: "State Restored. Ready to review your custom Studio Layout and PrimeNG Drawer prompt draft."
