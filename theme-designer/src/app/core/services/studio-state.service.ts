@@ -1,13 +1,18 @@
 import { Injectable, signal } from '@angular/core';
 
-import { StudioState, ThemeSetupConfig } from '../models/theme-designer.model';
+import {
+  StudioState,
+  ThemeFileExport,
+  ThemeFileImport,
+  ThemeSetupConfig,
+} from '../models/theme-designer.model';
 
 /**
  * Service for persisting active theme design state across route changes.
  * Maintains a single writable signal representing the current studio session.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StudioStateService {
   /**
@@ -29,7 +34,7 @@ export class StudioStateService {
       setupConfig: { ...config, id: uniqueId },
       customTokenRows: [],
       primitivePlaceholders: {},
-      semanticOverrideMap: {}
+      semanticOverrideMap: {},
     });
   }
 }

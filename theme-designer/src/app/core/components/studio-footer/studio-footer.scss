@@ -1,0 +1,32 @@
+.studio-footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid;
+  padding: 0.75rem 2rem;
+  // This is the container for the studio footer content
+}
+
+.footer-meta {
+  color: #6b7280; // Muted text color
+  font-weight: 400;
+  font-size: 0.85rem;
+  // This is the meta information section
+}
+
+.footer-social-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  // This is the social navigation container
+}
+
+.social-link {
+  color: #9ca3af; // Muted workspace tone
+  transition: color 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: #111827; // High contrast on hover
+  }
+}

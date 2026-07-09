@@ -34,6 +34,15 @@ export interface StudioState {
   semanticOverrideMap: Record<string, unknown>;
 }
 
+export interface ThemeFileExport {
+    primitive: any;
+    semantic: any;
+    components: any;
+    extend: any;
+}
+
+export interface ThemeFileImport {}
+
 /**
  * Zod schema for ThemeSetupConfig validation.
  * Validates core properties including preset options and dark mode flag.

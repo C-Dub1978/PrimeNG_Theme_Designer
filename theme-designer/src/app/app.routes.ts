@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/setup',
+    redirectTo: 'setup',
     pathMatch: 'full',
   },
   {
@@ -18,13 +18,13 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/setup',
+        redirectTo: 'setup',
         pathMatch: 'full',
       },
     ],
   },
   {
     path: '**',
-    redirectTo: '/setup',
+    redirectTo: 'setup',
   },
 ];

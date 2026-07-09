@@ -1,0 +1,13 @@
+.studio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(to right, #6b52a1, #3f007d);
+  color: white;
+  h1 {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+}
