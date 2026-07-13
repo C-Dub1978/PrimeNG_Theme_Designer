@@ -1,22 +1,33 @@
-import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
-import { DrawerModule } from 'primeng/drawer';
-import { ButtonModule } from 'primeng/button';
-import { TabsModule } from 'primeng/tabs';
-import { ToolbarService } from '@services/toolbar.service';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
-  selector: 'td-studio-drawer',
+  selector: 'studio-drawer',
   templateUrl: './studio-drawer.html',
-  styleUrls: ['./studio-drawer.scss'],
+  styleUrls: ['./studio-drawer.css'],
+  imports: [RouterLink, RouterLinkActive],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DrawerModule, ButtonModule, TabsModule]
+  standalone: true,
 })
 export class StudioDrawer {
-  private toolbarService = inject(ToolbarService);
-  isDrawerVisible = signal(true);
-  headerText = signal('');
+  tabs = [
+    { label: 'Primitive', path: 'primitive' },
+    { label: 'Semantic', path: 'semantic' },
+    { label: 'Colors', path: 'colors' },
+    { label: 'Components', path: 'components' },
+    { label: 'Custom Tokens', path: 'custom' },
+    { label: 'Schema', path: 'schema' },
+  ];
 
-  closeDrawer() {
-    this.isDrawerVisible.set(false);
+  updateSchema(): void {
+    // Implementation to be added later
+  }
+
+  resetPreset(): void {
+    // Implementation to be added later
+  }
+
+  exportSchema(): void {
+    // Implementation to be added later
   }
 }

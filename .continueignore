@@ -1,0 +1,5 @@
+theme-designer/.angular/
+theme-designer/node_modules/
+theme-designer/dist/
+.git/
+theme-designer/package-lock.json

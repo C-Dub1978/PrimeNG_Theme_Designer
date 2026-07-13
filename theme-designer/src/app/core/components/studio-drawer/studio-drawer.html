@@ -1,1 +1,19 @@
-<p>studio-drawer works!</p>
+<p-drawer [(visible)]="isDrawerVisible">
+  <ng-template #content>
+    <div class="drawer-action-tray">
+      <p-button label="RESET" (click)="resetPreset()"></p-button>
+      <p-button label="UPDATE SCHEMA" (click)="updateSchema()"></p-button>
+      <p-button label="EXPORT" (click)="exportSchema()"></p-button>
+    </div>
+    <p-tabs>
+      <p-tablist>
+        @for (tab of tabs; track tab.link) {
+          <p-tab [routerLink]="[tab.link]" routerLinkActive="p-tab-active">
+            {{ tab.label }}
+          </p-tab>
+        }
+      </p-tablist>   
+      <router-outlet></router-outlet>
+    </p-tabs>
+  </ng-template>
+</p-drawer>
