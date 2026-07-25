@@ -1,0 +1,156 @@
+// ==========================================================================
+// CORE SETUP WIZARD VIEWPORT CANVAS
+// ==========================================================================
+:host {
+  display: block;
+}
+
+// FIX 1: Wipe out harsh pink backgrounds for a clean, professional canvas
+.setup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
+  padding: 40px 24px;
+  background-color: #f8fafc; // Crisp, professional slate white
+  box-sizing: border-box;
+}
+
+// The structural card component housing the stepper
+.setup-wizard-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 32px;
+  width: 100%;
+  max-width: 580px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+}
+
+// ==========================================================================
+// FIX 2: STEP 2 FORM FIELD UN-BUNCHING AND ALIGNMENT
+// ==========================================================================
+
+.step-two-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; // Adds deep breathing room between fields
+  width: 100%;
+  margin-top: 16px;
+}
+
+// Individual structured rows mapping labels and inputs together
+.form-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; // Uniform space between the label text and input frame
+  width: 100%;
+
+  .field-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #334155; // Dark slate for premium readability
+  }
+
+  // Pure modern input/select styling specs
+  .field-input, 
+  .field-select {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    color: #0f172a;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: all 0.15s ease;
+
+    &:placeholder-shown {
+      color: #94a3b8;
+    }
+
+    // High performance active focus outlines
+    &:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+  }
+
+  // Ensure select dropdowns look crisp natively
+  .field-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://w3.org' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    padding-right: 40px;
+  }
+}
+
+// --- LINEAR HORIZONTAL Axis CHECKBOX ROW (ADD DARK MODE?) ---
+.form-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 12px; // Horizontal air gap between box and text
+  margin-top: 4px;
+  padding: 4px 0;
+  cursor: pointer;
+  user-select: none;
+
+  .checkbox-input {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1px solid #cbd5e1;
+    cursor: pointer;
+    accent-color: #2563eb; // Forces native checkbox to match blue accent rule
+  }
+
+  .checkbox-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #475569;
+  }
+}
+
+// ==========================================================================
+// ACCESSIBLE NAVIGATION ACTIONS TRAY
+// ==========================================================================
+
+.wizard-actions-tray {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
+
+  .wizard-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &.btn-back {
+      background-color: transparent;
+      border: 1px solid transparent;
+      color: #64748b;
+      &:hover { color: #334155; background-color: #f1f5f9; }
+    }
+
+    &.btn-next, &.btn-submit {
+      background-color: #2563eb;
+      border: 1px solid #2563eb;
+      color: #ffffff;
+      &:hover { background-color: #1d4ed8; border-color: #1d4ed8; }
+    }
+  }
+}

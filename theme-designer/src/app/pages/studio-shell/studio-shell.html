@@ -1,2 +1,76 @@
-<p>studio-shell works!</p>
-                                                                                                                                                                                                                                        x
+<div class="studio-layout-shell">
+  
+    <!-- TOP BANNER SYSTEM -->
+    <td-studio-header></td-studio-header>
+  
+    <!-- MIDDLE WORKSPACE HUB -->
+    <div class="studio-main-body">
+      
+      <!-- LEFT EXPANDABLE SIDEBAR / RAIL -->
+      <td-studio-drawer></td-studio-drawer>
+  
+      <!-- RIGHT SANDBOX PREVIEW CANVAS: Controlled by scoped dark-mode class hooks -->
+      <main class="studio-preview-canvas" [class.drawer-collapsed]="!isDrawerExpanded()">
+        
+        <!-- HORIZONTALLY CENTERED PREVIEW CHIP NAVIGATION BAR -->
+        <nav class="preview-navigation-bar">
+          <p-chip label="Kitchen Sink" 
+                  [class.active-chip]="activeView() === 'kitchen-sink'"
+                  (click)="setView('kitchen-sink')">
+          </p-chip>
+          <p-chip label="Dashboard" 
+                  [class.active-chip]="activeView() === 'dashboard'"
+                  (click)="setView('dashboard')">
+          </p-chip>
+          <p-chip label="Tables" 
+                  [class.active-chip]="activeView() === 'tables'"
+                  (click)="setView('tables')">
+          </p-chip>
+          <p-chip label="All Components" 
+                  [class.active-chip]="activeView() === 'all-components'"
+                  (click)="setView('all-components')">
+          </p-chip>
+        </nav>
+  
+        <!-- DYNAMIC PREVIEW CORE BOUNDS -->
+        <div class="sandbox-rendering-viewport">
+          @switch (activeView()) {
+            @case ('kitchen-sink') {
+              <div class="showcase-view-wrapper">
+                <!-- Dynamic Kitchen Sink Components Go Here -->
+                <h2>Kitchen Sink Component Playground</h2>
+                <p>Active Layout Workspace Configuration Reference: {{ designId() }}</p>
+              </div>
+            }
+            @case ('dashboard') {
+              <div class="showcase-view-wrapper">
+                <!-- Dynamic Dashboard Showcase Content Goes Here -->
+                <h2>Dashboard Preview Canvas</h2>
+                <p>Active Layout Workspace Configuration Reference: {{ designId() }}</p>
+              </div>
+            }
+            @case ('tables') {
+              <div class="showcase-view-wrapper">
+                <!-- Dynamic Tables Components Go Here -->
+                <h2>Data Grid and Table Showcase</h2>
+                <p>Active Layout Workspace Configuration Reference: {{ designId() }}</p>
+              </div>
+            }
+            @case ('all-components') {
+              <div class="showcase-view-wrapper">
+                <!-- Full Unified Collection Showcase Goes Here -->
+                <h2>All Framework Components Directory</h2>
+                <p>Active Layout Workspace Configuration Reference: {{ designId() }}</p>
+              </div>
+            }
+          }
+        </div>
+  
+      </main>
+    </div>
+  
+    <!-- BOTTOM METRICS BAR -->
+    <td-studio-footer></td-studio-footer>
+  
+  </div>
+  

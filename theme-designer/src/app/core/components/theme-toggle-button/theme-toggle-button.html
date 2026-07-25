@@ -1,11 +1,27 @@
-<div (click)="toggleTheme()" [class.disabled]="!isDarkSupported()" class="theme-toggle-container">
-    @let isDarkModeActive = toolbarService.darkModeActivated();
-    <span class="theme-toggle-label">
-        {{ !!isDarkModeActive ? moonEmoji : sunEmoji }}{{ !!isDarkModeActive ? 'Dark Mode' : 'Light Mode'}}
-    </span>
-    <p-togglebutton
-        [onIcon]="!!isDarkModeActive ? 'pi pi-moon' : 'pi pi-sum'"
-        [offIcon]="!!isDarkModeActive ? 'pi pi-sun' : 'pi pi-moon'"
-        [disabled]="!isDarkSupported()"
-    ></p-togglebutton>
+@let darkIsSupported = isDarkSupported();
+<div class="theme-toggle-container" [class.disabled]="!darkIsSupported">
+  @let isDarkModeSet = isDarkMode();
+  <span class="toggle-side-label dark-label" [class.active-label]="isDarkModeSet">
+    🌜&nbsp;DARK
+  </span>
+
+  <p-toggleswitch
+    size="large"
+    ariaLabel="Toggle between dark and light themes"
+    [ngModel]="isDarkModeSet"
+    [disabled]="!darkIsSupported"
+    (ngModelChange)="toggleTheme()"
+  >
+    <ng-template #handle>
+      @if (!!isDarkModeSet) {
+        <svg data-p-icon="pi-moon" class="pi" />
+      } @else {
+        <svg data-p-icon="pi-sun" class="pi" />
+      }
+    </ng-template>
+  </p-toggleswitch>
+  <!-- RIGHT ANCHOR: FORCED LIGHT LABEL AND SUN EMOJI -->
+  <span class="toggle-side-label light-label" [class.active-label]="!isDarkModeSet">
+    LIGHT&nbsp;🌞
+  </span>
 </div>

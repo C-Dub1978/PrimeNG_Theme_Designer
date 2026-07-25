@@ -1,3 +1,6 @@
 🎨 Refresh Colors
 ♻️ Reset Schema
 💾 Download Schema
+🌜 Moon Emoji
+🌞 Sun Emoji
+

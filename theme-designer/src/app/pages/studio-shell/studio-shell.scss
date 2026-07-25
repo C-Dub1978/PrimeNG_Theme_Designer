@@ -1,0 +1,183 @@
+// ==========================================================================
+// MASTER CORE STUDIO WORKSPACE CANVAS
+// ==========================================================================
+
+.studio-layout-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: #f8fafc;
+}
+
+// Fixed dimensions for top header banner
+td-studio-header {
+  height: var(--header-height, 70px);
+  width: 100%;
+  flex-shrink: 0;
+  z-index: 50;
+}
+
+// Fixed dimensions for bottom metrics banner
+td-studio-footer {
+  height: var(--footer-height, 50px);
+  width: 100%;
+  flex-shrink: 0;
+  z-index: 50;
+}
+
+// ==========================================================================
+// CENTRAL HUBS CONTAINER MIDDLE ROW
+// ==========================================================================
+
+.studio-main-body {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+// Left sidebar structural placeholder layer size profile
+td-studio-drawer {
+  flex-shrink: 0;
+  z-index: 45;
+}
+
+// ==========================================================================
+// MAIN SANDBOX PREVIEW CANVASES (THE PREVIEW PLAYGROUND)
+// ==========================================================================
+
+.studio-preview-canvas {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f5f9;
+  padding: 24px;
+  
+  // High Performance Layout Offsets: Smooth layout tracking transitions
+  transition: padding-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  // EXPANDED STATE CONFIGURATION (40vw - 60vw Area Headroom Layouts)
+  // Ensure the main canvas content scales out to handle the remaining space perfectly
+  padding-left: calc(var(--drawer-width, 40vw) + 24px);
+
+  // COLLAPSED STATE MODIFIER CONFIGURATION (100px Rail Area)
+  &.drawer-collapsed {
+    padding-left: calc(100px + 24px);
+  }
+}
+
+// ==========================================================================
+// HORIZONTALLY CENTERED PREVIEW NAVIGATION CHIPS
+// ==========================================================================
+
+.preview-navigation-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+
+  // Custom Structural Overrides for PrimeNG Chip Components
+  ::ng-deep .p-chip {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #475569;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    transition: all 0.15s ease;
+
+    &:hover {
+      background-color: #f8fafc;
+      border-color: #cbd5e1;
+      color: #0f172a;
+      transform: translateY(-1px);
+    }
+
+    // Active Selection State Target Styling Configuration Rules
+    &.active-chip {
+      background-color: #2563eb !important;
+      border-color: #2563eb !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+  }
+}
+
+// ==========================================================================
+// PREVIEW VIEWPORT AREA: ISOLATED THEME THEME CONTAINER
+// ==========================================================================
+
+.sandbox-rendering-viewport {
+  flex: 1;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  padding: 32px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+  overflow-y: auto;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  .showcase-view-wrapper {
+    h2 {
+      margin: 0 0 8px 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #64748b;
+      font-family: monospace;
+    }
+  }
+}
+
+// ==========================================================================
+// PREVIEW SCOPED DARK MODE OVERRIDES (THE SANDBOX THEME WRAPPER)
+// Only components inside the right-hand canvas container reflect dark properties
+// ==========================================================================
+
+.studio-preview-canvas.p-dark {
+  background-color: #0f172a; // Deep background switch for the playground boundary
+
+  .preview-navigation-bar {
+    ::ng-deep .p-chip:not(.active-chip) {
+      background-color: #1e293b;
+      border-color: #334155;
+      color: #94a3b8;
+
+      &:hover {
+        background-color: #334155;
+        color: #ffffff;
+      }
+    }
+  }
+
+  .sandbox-rendering-viewport {
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+    .showcase-view-wrapper {
+      h2 {
+        color: #f8fafc;
+      }
+      p {
+        color: #94a3b8;
+      }
+    }
+  }
+}

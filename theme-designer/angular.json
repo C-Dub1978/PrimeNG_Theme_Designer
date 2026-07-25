@@ -36,8 +36,8 @@
             "styles": ["src/styles.scss"],
             "polyfills": ["zone.js"],
             "outputPath": {
-                "base": "dist/theme-designer",
-                "browser": ""
+              "base": "dist/theme-designer",
+              "browser": ""
             }
           },
           "configurations": {
@@ -91,6 +91,6 @@
           }
         }
       }
-    }
+    } 
   }
 }

@@ -1,0 +1,101 @@
+<div class="setup-container">
+    <div class="setup-wizard-card">
+      
+      <!-- STEPPER HEADER / PROGRESS INDICATOR PLATFORM -->
+      <div class="wizard-header">
+        <h2>Theme Creation Wizard</h2>
+        <p>Step {{ activeStep() }} of 3</p>
+      </div>
+  
+      <!-- DYNAMIC STEP ROUTER MATRIX -->
+      @switch (activeStep()) {
+        
+        <!-- STEP 1: INITIAL WORKFLOW SELECTION -->
+        @case (1) {
+          <div class="step-one-flow">
+            <p class="step-instruction">Choose how you would like to initialize your custom theme:</p>
+            <div class="form-field-group">
+              <button class="field-input wizard-btn" (click)="setUploadMode(false)">
+                ✨ Start From Fresh Styled Mode
+              </button>
+              <button class="field-input wizard-btn" (click)="setUploadMode(true)">
+                📂 Upload Existing Theme File (.ts)
+              </button>
+            </div>
+          </div>
+        }
+  
+        <!-- STEP 2: DETAILS AND SCHEMAS DEFINITIONS (SIGNAL FORM BINDINGS) -->
+        @case (2) {
+          <div class="step-two-form">
+            
+            <!-- FIELD 1: THEME IDENTITY NAME -->
+            <div class="form-field-group">
+              <label class="field-label" for="themeName">Theme Configuration Name</label>
+              <input 
+                id="themeName"
+                type="text" 
+                class="field-input" 
+                [(ngModel)]="themeName" 
+                placeholder="e.g., PremiumCorporateTheme" />
+            </div>
+  
+            <!-- FIELD 2: BASE PRESET SELECTION -->
+            <div class="form-field-group">
+              <label class="field-label" for="basePreset">Base Preset Framework</label>
+              <select id="basePreset" class="field-select" [(ngModel)]="basePreset">
+                @for (preset of presets; track preset) {
+                  <option [value]="preset.toLowerCase()">{{ preset }}</option>
+                }
+              </select>
+            </div>
+  
+            <!-- FIELD 3: ACCESSIBILITY DARK MODE INCLUSION -->
+            <label class="form-checkbox-row">
+              <input 
+                type="checkbox" 
+                class="checkbox-input" 
+                [(ngModel)]="addDarkMode" />
+              <span class="checkbox-label">Add dark mode configurations to theme schema?</span>
+            </label>
+  
+          </div>
+        }
+  
+        <!-- STEP 3: CONFIRMATION SUMMARY -->
+        @case (3) {
+          <div class="step-three-summary">
+            <p class="step-instruction">Review your specifications before launching the design studio:</p>
+            
+            <div class="form-field-group">
+              <p><strong>Theme Name:</strong> {{ themeName() || 'Unnamed Theme' }}</p>
+              <p><strong>Base Preset Architecture:</strong> {{ basePreset() | titlecase }}</p>
+              <p><strong>Dark Mode Included:</strong> {{ addDarkMode() ? 'Yes, Initialized' : 'No, Omitted' }}</p>
+            </div>
+          </div>
+        }
+      }
+  
+      <!-- MASTER ACTION NAVIGATION TRAY -->
+      <div class="wizard-actions-tray">
+        @if (activeStep() > 1) {
+          <button class="wizard-btn btn-back" (click)="goBack()">Back</button>
+        }
+        
+        @if (activeStep() < 3) {
+          <button 
+            class="wizard-btn btn-next" 
+            [disabled]="activeStep() === 2 && isFormInvalid()"
+            (click)="goNext()">
+            Continue
+          </button>
+        } @else {
+          <button class="wizard-btn btn-submit" (click)="submitSetup()">
+            START DESIGNING!
+          </button>
+        }
+      </div>
+  
+    </div>
+  </div>
+  

@@ -1,15 +1,133 @@
-.theme-toggle-container {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+// ==========================================================================
+// THEME TOGGLE BUTTON COMPONENT STYLES
+// ==========================================================================
 
-  .theme-toggle-label {
+:host {
+  display: block;
+  width: 100%;
+}
+
+.theme-toggle-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  padding: 8px 12px;
+  user-select: none;
+  transition: opacity 0.2s ease;
+
+  // Render a clean visual lockout state if theme does not support dark mode changes
+  &.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+
+    .toggle-side-label {
+      color: #94a3b8 !important;
+    }
+  }
+}
+
+// --- FIXED TYPOGRAPHY SIDE LABELS ---
+.toggle-side-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+
+  // Dim the unselected label state to emphasize focus
+  &:not(.active-label) {
+    opacity: 0.55;
     font-weight: 500;
-    color: var(--text-color);
   }
 
-  &.disabled {
-    pointer-events: none;
-    opacity: 0.5;
+  // Active Theme Visual Indication Rules
+  &.dark-label.active-label {
+    color: #6366f1;
+    text-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
+  }
+
+  &.light-label.active-label {
+    color: #eab308;
+    text-shadow: 0 0 12px rgba(234, 179, 8, 0.2);
+  }
+}
+
+// --- PRIMENG TOGGLEBUTTON CUSTOMIZATION OVERRIDES ---
+:host ::ng-deep {
+  .p-togglebutton {
+    width: 52px;
+    height: 28px;
+    padding: 0;
+    border-radius: 30px;
+    background: #e2e8f0;
+    border: 1px solid #cbd5e1;
+    position: relative;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    // Remove text rendering inside the structural button box wrapper
+    .p-button-label {
+      display: none !important;
+    }
+
+    // Isolate icon placement metrics
+    .p-button-icon {
+      font-size: 0.95rem;
+      z-index: 2;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    // LIGHT MODE STATE FORMATTING
+    &:not(.p-togglebutton-checked) {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      
+      .p-button-icon {
+        color: #eab308;
+        transform: translateX(-10px);
+      }
+    }
+
+    // DARK MODE STATE FORMATTING 
+    &.p-togglebutton-checked {
+      background: #1e1b4b;
+      border-color: #312e81;
+
+      .p-button-icon {
+        color: #818cf8;
+        transform: translateX(10px);
+      }
+    }
+
+    // Accessible focus outline mechanics
+    &:focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+  }
+}
+
+// ==========================================================================
+// RAILS COMPACT VIEW MODIFIER CAPABILITIES
+// ==========================================================================
+
+// If the parent container collapses into the 100px sidebar mode,
+// hide the side labels to maintain a strict vertical layout alignment profile
+:host-context(.collapsed) {
+  .theme-toggle-container {
+    gap: 0;
+    padding: 8px 0;
+  }
+
+  .toggle-side-label {
+    display: none;
   }
 }

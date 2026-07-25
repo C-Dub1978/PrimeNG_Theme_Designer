@@ -1,19 +1,122 @@
-<p-drawer [(visible)]="isDrawerVisible">
-  <ng-template #content>
-    <div class="drawer-action-tray">
-      <p-button label="RESET" (click)="resetPreset()"></p-button>
-      <p-button label="UPDATE SCHEMA" (click)="updateSchema()"></p-button>
-      <p-button label="EXPORT" (click)="exportSchema()"></p-button>
-    </div>
-    <p-tabs>
-      <p-tablist>
-        @for (tab of tabs; track tab.link) {
-          <p-tab [routerLink]="[tab.link]" routerLinkActive="p-tab-active">
-            {{ tab.label }}
-          </p-tab>
+@if (isVisible()) {
+    <aside class="studio-drawer" [class.collapsed]="!isExpanded()">
+      
+      <!-- TOP ROW AREA: Navigation Tabs Layout -->
+      <div class="drawer-navigation-row">
+        <p-tabs>
+          <p-tablist class="drawer-tabs-list">
+            @for (tab of tabs; track tab.link) {
+              <p-tab [routerLink]="[tab.link]" routerLinkActive="p-tab-active" class="drawer-tab-item">
+                @if (isExpanded()) {
+                  <span class="tab-label-text">{{ tab.label }}</span>
+                } @else {
+                  <i [class]="tab.icon" [title]="tab.label"></i>
+                }
+              </p-tab>
+            }
+          </p-tablist>
+        </p-tabs>
+      </div>
+  
+      <!-- MIDDLE BODY AREA: Scrollable Option Workspace View -->
+      @if (isExpanded()) {
+        <div class="drawer-view-workspace">
+          <router-outlet></router-outlet>
+        </div>
+      }
+  
+      <!-- BOTTOM FOOTER TRAY AREA: Multi-State Action Buttons Layout -->
+      <div class="drawer-footer-tray">
+        @if (isExpanded()) {
+          <!-- EXPANDED SIDEBAR FOOTER: Horizontal Layout -->
+          <div class="expanded-actions-container">
+            
+            <!-- MULTI-STAGE RESET BUTTON WRAPPER -->
+            <div class="reset-button-context">
+              @if (!selectedPreset()) {
+                <button class="reset-trigger-btn" (click)="toggleResetDropdown()">
+                  <span class="btn-emoji">♻️</span>&nbsp;
+                  <span class="btn-text">Reset Schema</span>
+                  <i class="pi pi-chevron-down btn-arrow"></i>
+                </button>
+              } @else {
+                <button class="reset-trigger-btn active-preset" (click)="handleResetMainClick()">
+                  <span class="btn-emoji">♻️</span>&nbsp;
+                  <span class="btn-text">{{ selectedPreset() }}</span>
+                  <i class="pi pi-times btn-clear" (click)="clearPreset($event)"></i>
+                </button>
+              }
+  
+              <!-- DROPDOWN SELECT OVERLAY MENU -->
+              @if (isResetDropdownOpen()) {
+                <ul class="preset-dropdown-menu">
+                  @for (preset of presets; track preset) {
+                    <li class="dropdown-item-row" (click)="selectPreset(preset)">
+                      {{ preset }}
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+  
+            <!-- CORE UTILITY UTILITIES -->
+            <button class="footer-action-btn primary-save" (click)="updateSchema()">
+                🎨&nbsp;Save Changes
+            </button>
+            
+            <button class="footer-action-btn secondary-download" (click)="exportSchema()">
+                💾&nbsp;Download Schema
+            </button>
+  
+          </div>
+        } @else {
+          <!-- COLLAPSED RAIL SIDEBAR FOOTER: Vertically Stacked Icon FABs -->
+          <div class="collapsed-actions-container">
+            
+            <!-- RESET RAIL FAB -->
+            <button class="rail-fab-btn reset-fab" 
+                    [class.active-preset-fab]="selectedPreset()" 
+                    (click)="handleResetMainClick()" 
+                    [title]="selectedPreset() ? 'Reset to ' + selectedPreset() : 'Reset Preset Base'">
+              <i class="pi pi-refresh"></i>
+            </button>
+  
+            <!-- SAVE CHANGES RAIL FAB -->
+            <button class="rail-fab-btn save-fab" (click)="updateSchema()" title="Save Changes">
+              <i class="pi pi-palette"></i>
+            </button>
+  
+            <!-- DOWNLOAD SCHEMA RAIL FAB -->
+            <button class="rail-fab-btn download-fab" (click)="exportSchema()" title="Download Schema">
+              <i class="pi pi-save"></i>
+            </button>
+  
+          </div>
         }
-      </p-tablist>   
-      <router-outlet></router-outlet>
-    </p-tabs>
-  </ng-template>
-</p-drawer>
+      </div>
+  
+      <!-- EDGE BORDER GRIP: Toggle Expand/Collapse Width -->
+      <div class="drawer-drag-handle" (click)="toggleExpand()">
+        <i class="pi pi-ellipsis-v"></i>
+      </div>
+  
+    </aside>
+  }
+  
+  <!-- CONFIRMATION MODAL OVERLAY -->
+  @if (isResetModalOpen()) {
+    <div class="reset-confirmation-modal-backdrop" (click)="closeResetModal()">
+      <div class="modal-card-frame" (click)="$event.stopPropagation()">
+        <h3 class="modal-title">Reset to {{ selectedPreset() }}?</h3>
+        <p class="modal-body-text">
+          This operation will restore the workspace schema back to whichever preset you select.< /br>
+          Any unexported custom tokens or staged changes will be permanently erased. REALLY RESET?
+        </p>
+        <div class="modal-actions-row">
+          <button class="modal-btn cancel-btn" (click)="closeResetModal()">CANCEL</button>
+          <button class="modal-btn confirm-btn" (click)="executeResetConfirmation()">YES, RESET</button>
+        </div>
+      </div>
+    </div>
+  }
+  
