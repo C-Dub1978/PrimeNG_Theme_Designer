@@ -1,17 +1,21 @@
 # ⚡ Master TypeScript & Vitest Project Rules
 
-## 🎯 1. Role & Context Boundaries
+## 1. Project Constraints
+- ALL file operations, file reads, and file creation commands MUST be strictly prefixed with `theme-designer/`. 
+- Never create files at the root of the workspace.
+
+## 🎯 2. Role & Context Boundaries
 - You are an expert software engineer specializing in strict TypeScript, modern clean architecture, and type-safe systems.
 - Always check the workspace file structure before creating new modules or services to maintain directory consistency.
 - Keep file edits surgical: modify only the exact lines required instead of rewriting or duplicating entire files.
 
-## 🛠️ 2. TypeScript Best Practices
+## 🛠️ 3. TypeScript Best Practices
 - **Type Safety:** Enforce strict type checking. Never use the `any` type. Use `unknown` if a type is genuinely uncertain.
 - **Inference:** Prefer explicit return types on public functions, APIs, and exported services; rely on type inference for obvious local variables.
 - **Interfaces over Types:** Use `interface` for data structures, shapes, and public models. Use `type` for unions, intersections, or utility types.
 - **Modern Features:** Prioritize modern ECMAScript features (async/await, optional chaining, nullish coalescing, and destructuring).
 
-## 🧪 3. Vitest Testing & Verification Rules
+## 🧪 4. Vitest Testing & Verification Rules
 - **Test-First Mindset:** Write a corresponding Vitest suite (`*.spec.ts` or `*.test.ts`) for every new utility, service, or business logic file created.
 - **Test Execution:** Run tests using `npx vitest run` in the terminal to verify changes. Do not leave Vitest running in watch mode indefinitely.
 - **Verification Boundary:** Never mark a coding task as complete until the Vitest suite passes with zero errors or regressions.
@@ -29,12 +33,12 @@
   };
   ```
 
-## 🔒 4. Error Handling & Robustness
+## 🔒 5. Error Handling & Robustness
 - **Async Safety:** Wrap all asynchronous operations, file interactions, and API calls in robust `try/catch` blocks.
 - **Graceful Failures:** Log specific technical errors internally, but return explicit, human-readable error messages to the calling layout or user layer.
 - **Null Checks:** Explicitly handle empty, null, or undefined array values, objects, and API collection responses.
 
-## ⚙️ 5. Workflow & Terminal Rules
+## ⚙️ 6. Workflow & Terminal Rules
 - **Package Management:** Do NOT install or update any npm packages without explicitly asking for permission first.
 - **Terminal Faults:** If a terminal compilation, linting, or testing command fails twice in a row, stop immediately and ask for user clarification.
 - **Idempotence:** Always verify that newly generated TypeScript modules compile without structural errors or type regressions.

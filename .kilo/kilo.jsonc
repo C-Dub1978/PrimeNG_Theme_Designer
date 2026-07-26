@@ -1,0 +1,4 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "instructions": [".kilo/rules/main_rules.md", ".kilo/rules/angular_rules.md"]
+}
