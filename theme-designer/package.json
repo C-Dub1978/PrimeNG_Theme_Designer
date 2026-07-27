@@ -7,7 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "vitest",
-    "build-prod": "ng build --configuration production --base-href /PrimeNG_Theme_Designer/"
+    "build-prod": "ng build --configuration production --base-href /PrimeNG_Theme_Designer/",
+    "storybook": "ng run theme-designer:storybook",
+    "build-storybook": "ng run theme-designer:build-storybook"
   },
   "private": true,
   "packageManager": "npm@11.17.0",
@@ -36,6 +38,14 @@
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2",
-    "vitest": "^4.0.8"
+    "vitest": "^4.0.8",
+    "storybook": "^10.5.4",
+    "@storybook/angular-vite": "^10.5.4",
+    "@types/node": "^20",
+    "@angular-devkit/architect": "^0.2200.0",
+    "@angular-devkit/core": "^22.0.0",
+    "@angular/animations": "^22.0.0",
+    "@analogjs/vite-plugin-angular": "^2.6.4",
+    "vite": "^8.1.5"
   }
 }

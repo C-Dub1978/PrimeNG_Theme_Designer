@@ -1,5 +1,16 @@
 # ⚡ Master TypeScript & Vitest Project Rules
 
+## 🛑 CRITICAL LANGUAGE CONSTRAINT
+- You MUST answer, reason, and output exclusively in English.
+- NEVER switch to Chinese, Japanese, or any other language under any circumstances.
+
+## 🛑 CRITICAL BOUNDARY: OS & FILESYSTEM ISOLATION
+- You are strictly FORBIDDEN from modifying anything outside the `theme-designer/` directory.
+- You MUST NEVER run system configuration commands, change OS permissions, modify groups, or touch user roles (e.g., NO `chmod`, NO `chown`, NO `groupadd`, NO `sudo`).
+- If you need to perform an action that you believe requires permission elevation or system changes, STOP immediately and ask the user to do it.
+- Your entire environment is a strict sandboxed project workspace. Treat it as a completely read-only OS filesystem outside of `theme-designer/`.
+
+
 ## 1. Project Constraints
 - ALL file operations, file reads, and file creation commands MUST be strictly prefixed with `theme-designer/`. 
 - Never create files at the root of the workspace.

@@ -1,5 +1,6 @@
 {
     "debug.javascript.defaultRuntimeExecutable": {
         "pwa-node": "/home/cdub_dell/.local/share/mise/shims/node"
-    }
+    },
+    "angular.enable-strict-mode-prompt": false
 }
