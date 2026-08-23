@@ -5,14 +5,17 @@ import { FormsModule } from '@angular/forms';
 import { ToolbarService } from '../../core/services/toolbar.service';
 
 @Component({
-  selector: 'td-setup',
+  selector: 'td-setup-new',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './setup.html',
-  styleUrl: './setup.scss',
+  templateUrl: './setup-new.html',
+  styleUrl: './setup-new.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Setup {
+export class SetupNew {
+onStartDesigning() {
+throw new Error('Method not implemented.');
+}
   private router = inject(Router);
   private toolbarService = inject(ToolbarService);
 

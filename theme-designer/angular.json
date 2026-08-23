@@ -91,21 +91,19 @@
           }
         },
         "storybook": {
-          "builder": "@storybook/angular-vite:start-storybook",
-          "options": {
-            "configDir": ".storybook",
-            "browserTarget": "theme-designer:build",
-            "port": 6006
+            "builder": "@storybook/angular-vite:start-storybook",
+            "options": {
+              "configDir": ".storybook",
+              "port": 6006
+            }
+          },
+          "build-storybook": {
+            "builder": "@storybook/angular-vite:build-storybook",
+            "options": {
+              "configDir": ".storybook",
+              "outputDir": "storybook-static"
+            }
           }
-        },
-        "build-storybook": {
-          "builder": "@storybook/angular-vite:build-storybook",
-          "options": {
-            "configDir": ".storybook",
-            "browserTarget": "theme-designer:build",
-            "outputDir": "storybook-static"
-          }
-        }
       }
     } 
   }

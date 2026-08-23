@@ -2,5 +2,11 @@
     "debug.javascript.defaultRuntimeExecutable": {
         "pwa-node": "/home/cdub_dell/.local/share/mise/shims/node"
     },
-    "angular.enable-strict-mode-prompt": false
+    "angular.enable-strict-mode-prompt": false,
+    "github.copilot.llm-gateway.defaultMaxOutputTokens": 16384,
+    "github.copilot.llm-gateway.agentTemperature": 0.1,
+    "github.copilot.llm-gateway.extraModelOptions": {
+        "max_tokens": 16384,
+        "temperature": 0.1
+    }
 }

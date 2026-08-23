@@ -1,133 +1,171 @@
 // ==========================================================================
-// THEME TOGGLE BUTTON COMPONENT STYLES
+// THEME TOGGLE BUTTON COMPONENT STYLES - ORIGINAL PALETTE ENFORCED
 // ==========================================================================
 
 :host {
-  display: block;
-  width: 100%;
+    display: block;
+    width: 100%;
+
+    // --- RESTORED LIGHT MODE VARIATION MATRIX ---
+    --text: #01152d;
+    --background: #fdedf7;
+    --primary: #f70858;
+    --secondary: #8ef075;
+    --accent: #5eeff7;
+
+    --linearPrimarySecondary: linear-gradient(#f70858, #8ef075);
+    --linearPrimaryAccent: linear-gradient(#f70858, #5eeff7);
+    --linearSecondaryAccent: linear-gradient(#8ef075, #5eeff7);
+    --radialPrimarySecondary: radial-gradient(#f70858, #8ef075);
+    --radialPrimaryAccent: radial-gradient(#f70858, #5eeff7);
+    --radialSecondaryAccent: radial-gradient(#8ef075, #5eeff7);
+}
+
+// --- TARGET THEME PIVOT SCOPE: FORCED DARK MODE ---
+:host-context(.p-dark),
+:host-context(.studio-preview-canvas.p-dark) {
+    // --- RESTORED DARK MODE VARIATION MATRIX ---
+    --text: #eeeadb;
+    --background: #040407;
+    --primary: #08f00b;
+    --secondary: #5236cc;
+    --accent: #fb108e;
+
+    --linearPrimarySecondary: linear-gradient(#08f00b, #5236cc);
+    --linearPrimaryAccent: linear-gradient(#08f00b, #fb108e);
+    --linearSecondaryAccent: linear-gradient(#5236cc, #fb108e);
+    --radialPrimarySecondary: radial-gradient(#08f00b, #5236cc);
+    --radialPrimaryAccent: radial-gradient(#08f00b, #fb108e);
+    --radialSecondaryAccent: radial-gradient(#5236cc, #fb108e);
 }
 
 .theme-toggle-container {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  width: 100%;
-  padding: 8px 12px;
-  user-select: none;
-  transition: opacity 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+    padding: 8px 12px;
+    user-select: none;
+    transition: opacity 0.2s ease;
 
-  // Render a clean visual lockout state if theme does not support dark mode changes
-  &.disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    pointer-events: none;
+    &.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
 
-    .toggle-side-label {
-      color: #94a3b8 !important;
+        .toggle-side-label {
+            opacity: 0.3;
+            color: #4c4e4e;
+        }
     }
-  }
 }
 
-// --- FIXED TYPOGRAPHY SIDE LABELS ---
+// --- TYPOGRAPHY SIDE LABELS BOUND TO PREFERRED PALETTE ---
 .toggle-side-label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  color: #94a3b8;
-  white-space: nowrap;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  display: inline-flex;
-  align-items: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
 
-  // Dim the unselected label state to emphasize focus
-  &:not(.active-label) {
-    opacity: 0.55;
-    font-weight: 500;
-  }
+    // --- EMOJI ICON SCALING MATRIX ---
+    .emoji-icon {
+        font-size: 1.3rem;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 1;
+        transform: translateY(-1px);
+    }
 
-  // Active Theme Visual Indication Rules
-  &.dark-label.active-label {
-    color: #6366f1;
-    text-shadow: 0 0 12px rgba(99, 102, 241, 0.2);
-  }
+    &:not(.active-label) {
+        opacity: 0.35;
+        font-weight: 500;
 
-  &.light-label.active-label {
-    color: #eab308;
-    text-shadow: 0 0 12px rgba(234, 179, 8, 0.2);
-  }
+        .emoji-icon {
+            filter: grayscale(40%);
+        }
+    }
+
+    // Uses your primary color token and sharp neon text glows for active states
+    &.dark-label.active-label {
+        color: var(--primary);
+        text-shadow: 0 0 14px var(--primary);
+    }
+
+    &.light-label.active-label {
+        color: var(--primary);
+        text-shadow: 0 0 14px var(--primary);
+    }
 }
 
 // --- PRIMENG TOGGLEBUTTON CUSTOMIZATION OVERRIDES ---
 :host ::ng-deep {
-  .p-togglebutton {
-    width: 52px;
-    height: 28px;
-    padding: 0;
-    border-radius: 30px;
-    background: #e2e8f0;
-    border: 1px solid #cbd5e1;
-    position: relative;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    .p-togglebutton {
+        width: 52px;
+        height: 28px;
+        padding: 0;
+        border-radius: 30px;
+        border: 2px solid var(--secondary); // Uses secondary color for default edge borders
+        position: relative;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
-    // Remove text rendering inside the structural button box wrapper
-    .p-button-label {
-      display: none !important;
+        .p-button-label {
+            display: none !important;
+        }
+
+        .p-button-icon {
+            font-size: 0.95rem;
+            z-index: 2;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        // LIGHT MODE STATE FORMATTING (Uses Light Primary for icons)
+        &:not(.p-togglebutton-checked) {
+            background: var(--accent);
+            border-color: var(--primary);
+
+            .p-button-icon {
+                color: var(--primary);
+                transform: translateX(-10px);
+            }
+        }
+
+        // DARK MODE STATE FORMATTING (Uses Dark Primary for icons)
+        &.p-togglebutton-checked {
+            background: var(--accent);
+            border-color: var(--primary);
+
+            .p-button-icon {
+                color: var(--primary);
+                transform: translateX(10px);
+            }
+        }
+
+        // Accessible focus outline mechanics utilizing your explicit accent token
+        &:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
     }
-
-    // Isolate icon placement metrics
-    .p-button-icon {
-      font-size: 0.95rem;
-      z-index: 2;
-      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    // LIGHT MODE STATE FORMATTING
-    &:not(.p-togglebutton-checked) {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
-      
-      .p-button-icon {
-        color: #eab308;
-        transform: translateX(-10px);
-      }
-    }
-
-    // DARK MODE STATE FORMATTING 
-    &.p-togglebutton-checked {
-      background: #1e1b4b;
-      border-color: #312e81;
-
-      .p-button-icon {
-        color: #818cf8;
-        transform: translateX(10px);
-      }
-    }
-
-    // Accessible focus outline mechanics
-    &:focus-visible {
-      outline: 2px solid #2563eb;
-      outline-offset: 2px;
-    }
-  }
 }
 
 // ==========================================================================
 // RAILS COMPACT VIEW MODIFIER CAPABILITIES
 // ==========================================================================
-
-// If the parent container collapses into the 100px sidebar mode,
-// hide the side labels to maintain a strict vertical layout alignment profile
 :host-context(.collapsed) {
-  .theme-toggle-container {
-    gap: 0;
-    padding: 8px 0;
-  }
+    .theme-toggle-container {
+        gap: 0;
+        padding: 8px 0;
+    }
 
-  .toggle-side-label {
-    display: none;
-  }
+    .toggle-side-label {
+        display: none;
+    }
 }

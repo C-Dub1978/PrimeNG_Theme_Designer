@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, computed, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToggleButton } from 'primeng/togglebutton';
 import { ToolbarService } from '../../services/toolbar.service';
@@ -14,6 +14,11 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 })
 export class ThemeToggleButton {
   private toolbarService = inject(ToolbarService);
+
+    customSwitchTokens = signal<Record<string, string>>({
+        background: '#e0e0e0',
+        checkedBackground: '#4caf50'
+    });
 
   // Map shared service states to local read-only properties via computed signals
   isDarkMode = computed(() => this.toolbarService.darkModeActivated());

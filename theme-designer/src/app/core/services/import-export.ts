@@ -17,18 +17,20 @@ export class ImportExport {
     private toastService = inject(MessageService);
     // ─── File Upload State ───────────────────────────────────────────────
     private _uploadedFile = signal<File | null>(null);
+    public uploadedFile = computed(() => this._uploadedFile.asReadonly());
 
     private _isFileUploaded = signal(false);
-    public isFileUploaded = computed(() => this._isFileUploaded.asReadonly);
+    public isFileUploaded = computed(() => this._isFileUploaded.asReadonly());
 
     private _setupModel = signal<SetupFormData | undefined>(undefined);
     public setupModel = computed(() => this._setupModel.asReadonly());
+    
     set setupmodel(model: SetupFormData) {
         this._setupModel.set(model);
     }
 
     // ─── File Removed Handler ────────────────────────────────────────────
-    private onFileRemoved(): void {
+    onFileRemoved(): void {
       this.removeFile();
     }
   
@@ -74,10 +76,10 @@ export class ImportExport {
               });
     
               // Lock the preset dropdown (file took precedence)
-              this.isFileUploaded.set(true);
+              this._isFileUploaded.set(true);
     
               // Store the uploaded file reference
-              this.uploadedFile.set(file);
+              this._uploadedFile.set(file);
     
               this.toastService.add({
                 severity: 'success',
@@ -87,8 +89,8 @@ export class ImportExport {
               });
             } else {
               // Zod validation failed — clear file input and alert user
-              this.uploadedFile.set(null);
-              this.isFileUploaded.set(false);
+              this._uploadedFile.set(null);
+              this._isFileUploaded.set(false);
     
               const errorMessage = validationResult.error.issues
                 .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
@@ -103,8 +105,8 @@ export class ImportExport {
             }
           } catch {
             // JSON.parse failed — clear file input and alert user
-            this.uploadedFile.set(null);
-            this.isFileUploaded.set(false);
+            this._uploadedFile.set(null);
+            this._isFileUploaded.set(false);
     
             this.toastService.add({
               severity: 'error',
@@ -117,8 +119,8 @@ export class ImportExport {
         };
     
         reader.onerror = (): void => {
-          this.uploadedFile.set(null);
-          this.isFileUploaded.set(false);
+          this._uploadedFile.set(null);
+          this._isFileUploaded.set(false);
     
           this.toastService.add({
             severity: 'error',

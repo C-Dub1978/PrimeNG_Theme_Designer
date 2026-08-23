@@ -9,6 +9,7 @@
     "test": "vitest",
     "build-prod": "ng build --configuration production --base-href /PrimeNG_Theme_Designer/",
     "storybook": "ng run theme-designer:storybook",
+    "storybookno": "NODE_OPTIONS='--no-deprecation' ng run theme-designer:storybook dev -p 6006",
     "build-storybook": "ng run theme-designer:build-storybook"
   },
   "private": true,
@@ -20,7 +21,6 @@
     "@angular/forms": "^22.0.0",
     "@angular/platform-browser": "^22.0.0",
     "@angular/router": "^22.0.0",
-    "@primeuix/mcp": "^1.0.1",
     "@primeuix/themes": "3.0.0-rc.1",
     "primeicons": "^7.0.0",
     "primeng": "22.0.0-rc.1",
@@ -30,22 +30,24 @@
     "zone.js": "^0.16.2"
   },
   "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.6.4",
+    "@angular-devkit/architect": "^0.2200.0",
     "@angular-devkit/build-angular": "^22.0.5",
+    "@angular-devkit/core": "^22.0.0",
+    "@angular/animations": "^22.0.0",
     "@angular/build": "^22.0.3",
     "@angular/cli": "^22.0.3",
     "@angular/compiler-cli": "^22.0.0",
+    "@ngx-env/builder": "^21.0.1",
+    "@storybook/angular-vite": "^10.5.4",
+    "@types/node": "^20",
     "angular-mcp-server": "^1.1.1",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
-    "typescript": "~6.0.2",
-    "vitest": "^4.0.8",
     "storybook": "^10.5.4",
-    "@storybook/angular-vite": "^10.5.4",
-    "@types/node": "^20",
-    "@angular-devkit/architect": "^0.2200.0",
-    "@angular-devkit/core": "^22.0.0",
-    "@angular/animations": "^22.0.0",
-    "@analogjs/vite-plugin-angular": "^2.6.4",
-    "vite": "^8.1.5"
+    "typescript": "~6.0.2",
+    "vite": "^8.1.5",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.0.8"
   }
 }

@@ -2,36 +2,36 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { disabled, form, FormField } from '@angular/forms/signals';
 import { StudioStateService } from '../../core/services/studio-state.service';
-import { StudioStateSchema } from '../../core/models/theme-designer.model';
 import { MessageService } from 'primeng/api';
-import { FileUploadModule, FileSelectEvent } from 'primeng/fileupload';
+import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
 import { StepperModule } from 'primeng/stepper';
-import { DecimalPipe } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 import { LabelModule } from 'primeng/label';
 import { ToolbarService } from '../../core/services/toolbar.service';
 import { ImportExport, SetupFormData } from '@core/services/import-export';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'td-setup',
   templateUrl: './setup.html',
-  styleUrl: './setup.scss',
+  styleUrls: ['./setup.scss'],
+  standalone: true,
   providers: [MessageService],
   imports: [
     FileUploadModule,
     SelectModule,
-    StepperModule,
     InputTextModule,
     ButtonModule,
-    DecimalPipe,
-    FormField,
     ReactiveFormsModule,
     CheckboxModule,
     LabelModule,
+    DecimalPipe,
+    StepperModule,
+    FormField
   ],
 })
 export class Setup {
@@ -40,6 +40,13 @@ export class Setup {
   private studioStateService = inject(StudioStateService);
   private toolbarService = inject(ToolbarService);
 
+  get uploadedFile() {
+    return this.importExportSerice.uploadedFile();
+  }
+
+  get isFileUploaded() {
+    return this.importExportSerice.isFileUploaded();
+  }
   // ─── Stepper State ───────────────────────────────────────────────────
   activeStep = signal({ value: 1 });
 
@@ -60,15 +67,16 @@ export class Setup {
 
   // Generate the interactive field tree, wiring mutual-exclusion logic between
   // the imported-file flow and the manual preset selection flow.
-  setupForm = form(this.setupModel, (path) => {
-    disabled(path.presetBase, { when: () => this.importExportSerice.isFileUploaded() });
-  });
+  //   setupForm = form(this.setupModel, (path) => {
+  //     disabled(path.presetBase, () => this.importExportSerice.isFileUploaded());
+  //   });
+  setupForm = form(this.setupModel, (path) => {});
 
   // ─── Mutual Exclusion: Manual Preset Selection ────────────────────────
   // True only when the user has directly interacted with the preset dropdown
   // (its field becomes dirty on UI interaction, never on a programmatic
   // setupModel.set() patch from an imported file).
-  isPresetManuallySelected = computed(() => this.setupForm.presetBase().dirty());
+  isPresetManuallySelected = computed(() => this.setupForm?.presetBase().dirty());
 
   handleDarkModeChange(event: CheckboxChangeEvent): void {
     const value = event.checked;
@@ -79,6 +87,14 @@ export class Setup {
   isFormInvalid(): boolean {
     const values = this.setupModel();
     return !values.themeName.trim() || !values.presetBase;
+  }
+
+  onFileSelected(event: FileSelectEvent): void {
+    this.importExportSerice.onFileSelected(event);
+  }
+
+  onRemoveFile(): void {
+    this.importExportSerice.onFileRemoved();
   }
 
   // ─── Submission Handler: START DESIGNING! ────────────────────────────

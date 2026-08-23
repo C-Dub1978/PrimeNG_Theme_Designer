@@ -1,27 +1,33 @@
-@let darkIsSupported = isDarkSupported();
-<div class="theme-toggle-container" [class.disabled]="!darkIsSupported">
-  @let isDarkModeSet = isDarkMode();
-  <span class="toggle-side-label dark-label" [class.active-label]="isDarkModeSet">
-    🌜&nbsp;DARK
-  </span>
+@let darkIsSupported = isDarkSupported(); 
 
-  <p-toggleswitch
-    size="large"
+<div class="theme-toggle-container" [class.disabled]="!darkIsSupported"> 
+  @let isDarkModeSet = isDarkMode(); 
+  
+  <span class="toggle-side-label dark-label" [class.active-label]="isDarkModeSet"> 
+    <!-- Encapsulate for font adjustments -->
+    <span class="emoji-icon">🌜</span>&nbsp;DARK 
+  </span> 
+  
+  <p-toggleswitch 
+    size="large" 
     ariaLabel="Toggle between dark and light themes"
-    [ngModel]="isDarkModeSet"
-    [disabled]="!darkIsSupported"
-    (ngModelChange)="toggleTheme()"
-  >
-    <ng-template #handle>
-      @if (!!isDarkModeSet) {
-        <svg data-p-icon="pi-moon" class="pi" />
-      } @else {
-        <svg data-p-icon="pi-sun" class="pi" />
-      }
-    </ng-template>
-  </p-toggleswitch>
-  <!-- RIGHT ANCHOR: FORCED LIGHT LABEL AND SUN EMOJI -->
-  <span class="toggle-side-label light-label" [class.active-label]="!isDarkModeSet">
-    LIGHT&nbsp;🌞
-  </span>
+    styleClass="toggle-btn-inner"
+    [ngModel]="isDarkModeSet" 
+    [dt]="customSwitchTokens()" d
+    [disabled]="!darkIsSupported" 
+    (ngModelChange)="toggleTheme()"> 
+    
+    <ng-template #handle> 
+      @if (!!isDarkModeSet) { 
+        <svg data-p-icon="pi-moon" class="pi" /> 
+      } @else { 
+        <svg data-p-icon="pi-sun" class="pi" /> 
+      } 
+    </ng-template> 
+  </p-toggleswitch> 
+
+  <!-- RIGHT ANCHOR: FORCED LIGHT LABEL AND SUN EMOJI --> 
+  <span class="toggle-side-label light-label" [class.active-label]="!isDarkModeSet"> 
+    LIGHT&nbsp;<span class="emoji-icon">🌞</span> 
+  </span> 
 </div>
